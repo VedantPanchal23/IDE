@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
 import './TitleBar.css'
 
-const TitleBar = ({ 
-  onNewFile, 
-  onOpenFile, 
+const TitleBar = ({
+  onNewFile,
+  onOpenFile,
   onSave,
   onSaveAs,
   onSaveAll,
   onCloseFile,
   onCloseAllFiles,
-  onToggleTerminal, 
+  onToggleTerminal,
   onOpenSettings,
   onToggleSidebar,
   onTogglePanel,
@@ -56,11 +56,13 @@ const TitleBar = ({
       { separator: true },
       { label: 'Open File...', shortcut: 'Ctrl+O', action: onOpenFile },
       { label: 'Open Folder...', shortcut: 'Ctrl+K Ctrl+O', action: () => console.log('Open folder') },
-      { label: 'Open Recent', submenu: [
-        { label: 'Reopen Closed Editor', shortcut: 'Ctrl+Shift+T' },
-        { separator: true },
-        { label: 'Clear Recently Opened' }
-      ]},
+      {
+        label: 'Open Recent', submenu: [
+          { label: 'Reopen Closed Editor', shortcut: 'Ctrl+Shift+T' },
+          { separator: true },
+          { label: 'Clear Recently Opened' }
+        ]
+      },
       { separator: true },
       { label: 'Save', shortcut: 'Ctrl+S', action: onSave, disabled: !currentFile },
       { label: 'Save As...', shortcut: 'Ctrl+Shift+S', action: onSaveAs, disabled: !currentFile },
@@ -143,7 +145,7 @@ const TitleBar = ({
     }
 
     return (
-      <div 
+      <div
         key={index}
         className={`dropdown-menu-item ${item.disabled ? 'disabled' : ''}`}
         onClick={() => !item.disabled && handleMenuItemClick(item.action)}
@@ -169,7 +171,7 @@ const TitleBar = ({
   return (
     <div className="title-bar">
       <div className="title-bar-left">
-        <div className="app-icon">📝</div>
+        <div className="app-icon"></div>
         <div className="app-title">
           IDE Studio
           {currentFile && (
@@ -186,12 +188,12 @@ const TitleBar = ({
           )}
         </div>
       </div>
-      
+
       <div className="title-bar-center">
         <div className="menu-bar">
           {Object.keys(menus).map(menuName => (
             <div key={menuName} className="menu-container">
-              <div 
+              <div
                 className={`menu-item ${activeMenu === menuName ? 'active' : ''}`}
                 onClick={() => handleMenuClick(menuName)}
               >
@@ -202,41 +204,41 @@ const TitleBar = ({
           ))}
         </div>
       </div>
-      
+
       <div className="title-bar-right">
         <div className="window-controls">
-          <button 
+          <button
             className="window-control minimize"
             onClick={onMinimize}
             title="Minimize"
           >
             <svg width="10" height="10" viewBox="0 0 10 10">
-              <path d="M 0,5 10,5" stroke="currentColor" strokeWidth="1"/>
+              <path d="M 0,5 10,5" stroke="currentColor" strokeWidth="1" />
             </svg>
           </button>
-          <button 
+          <button
             className="window-control maximize"
             onClick={onMaximize}
             title={isMaximized ? "Restore" : "Maximize"}
           >
             {isMaximized ? (
               <svg width="10" height="10" viewBox="0 0 10 10">
-                <path d="M 0,2 8,2 8,10 0,10 Z" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M 2,0 10,0 10,8" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M 0,2 8,2 8,10 0,10 Z" fill="none" stroke="currentColor" strokeWidth="1" />
+                <path d="M 2,0 10,0 10,8" fill="none" stroke="currentColor" strokeWidth="1" />
               </svg>
             ) : (
               <svg width="10" height="10" viewBox="0 0 10 10">
-                <path d="M 0,0 10,0 10,10 0,10 Z" fill="none" stroke="currentColor" strokeWidth="1"/>
+                <path d="M 0,0 10,0 10,10 0,10 Z" fill="none" stroke="currentColor" strokeWidth="1" />
               </svg>
             )}
           </button>
-          <button 
+          <button
             className="window-control close"
             onClick={onClose}
             title="Close"
           >
             <svg width="10" height="10" viewBox="0 0 10 10">
-              <path d="M 0,0 10,10 M 10,0 0,10" stroke="currentColor" strokeWidth="1"/>
+              <path d="M 0,0 10,10 M 10,0 0,10" stroke="currentColor" strokeWidth="1" />
             </svg>
           </button>
         </div>

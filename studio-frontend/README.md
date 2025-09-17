@@ -21,7 +21,7 @@ A professional Visual Studio Code-inspired IDE built with React and modern web t
 - **Resizable Panels**: Fully resizable interface components
 - **Tab Management**: Multiple file tabs with dirty indicators
 
-### 📝 **Advanced Editor**
+###  **Advanced Editor**
 - **Monaco Editor**: The same editor that powers VS Code
 - **Syntax Highlighting**: Support for JavaScript and other languages
 - **IntelliSense**: Auto-completion and error detection

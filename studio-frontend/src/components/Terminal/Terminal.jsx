@@ -3,9 +3,9 @@ import { Terminal as TerminalIcon, Play, Settings, X } from 'lucide-react';
 import CodeExecutionPanel from '../Panels/CodeExecutionPanel';
 import './Terminal.css';
 
-const Terminal = ({ 
-  executionService, 
-  isVisible = false, 
+const Terminal = ({
+  executionService,
+  isVisible = false,
   onToggle,
   currentFile,
   activeTab: parentActiveTab = 'terminal',
@@ -69,7 +69,7 @@ const Terminal = ({
         content: `Breakpoint hit at line ${line}`,
         timestamp: new Date().toISOString()
       }]);
-      
+
       if (Object.keys(variables).length > 0) {
         setOutput(prev => [...prev, {
           type: 'debug',
@@ -221,7 +221,7 @@ const Terminal = ({
     <div className="terminal">
       <div className="terminal-header">
         <div className="terminal-tabs">
-          <button 
+          <button
             className={`terminal-tab ${activeTab === 'terminal' ? 'active' : ''}`}
             onClick={() => {
               setActiveTab('terminal');
@@ -231,7 +231,7 @@ const Terminal = ({
             <TerminalIcon className="w-4 h-4" />
             Terminal
           </button>
-          <button 
+          <button
             className={`terminal-tab ${activeTab === 'execution' ? 'active' : ''}`}
             onClick={() => {
               setActiveTab('execution');
@@ -245,7 +245,7 @@ const Terminal = ({
         <div className="terminal-controls">
           {activeTab === 'terminal' && currentFile && (
             <>
-              <button 
+              <button
                 className="terminal-btn terminal-btn-run"
                 onClick={handleRunCurrentFile}
                 disabled={isRunning}
@@ -253,19 +253,19 @@ const Terminal = ({
               >
                 ▶ Run
               </button>
-              <button 
+              <button
                 className="terminal-btn terminal-btn-debug"
                 onClick={handleDebugCurrentFile}
                 disabled={isRunning}
                 title="Debug current file"
               >
-                🐛 Debug
+                Debug
               </button>
             </>
           )}
           {activeTab === 'terminal' && (
             <>
-              <button 
+              <button
                 className="terminal-btn terminal-btn-stop"
                 onClick={stopExecution}
                 disabled={!isRunning}
@@ -273,7 +273,7 @@ const Terminal = ({
               >
                 ⏹ Stop
               </button>
-              <button 
+              <button
                 className="terminal-btn terminal-btn-clear"
                 onClick={clearTerminal}
                 title="Clear terminal"
@@ -282,7 +282,7 @@ const Terminal = ({
               </button>
             </>
           )}
-          <button 
+          <button
             className="terminal-btn terminal-btn-close"
             onClick={onToggle}
             title="Close panel"
@@ -291,14 +291,14 @@ const Terminal = ({
           </button>
         </div>
       </div>
-      
+
       {activeTab === 'terminal' ? (
         <>
           <div className="terminal-content" ref={terminalRef}>
             <div className="terminal-output">
               {output.map((item, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className={`terminal-line ${getOutputClass(item.type)}`}
                 >
                   <span className="terminal-timestamp">
@@ -333,7 +333,7 @@ const Terminal = ({
           </form>
         </>
       ) : (
-        <CodeExecutionPanel 
+        <CodeExecutionPanel
           currentFile={currentFile}
           code={currentFile?.content || ''}
           triggerExecution={triggerExecution}
@@ -348,7 +348,7 @@ const Terminal = ({
               }]);
             } else {
               setOutput(prev => [...prev, {
-                type: 'error', 
+                type: 'error',
                 content: `Execution failed: ${result.error}`,
                 timestamp: new Date().toISOString()
               }]);

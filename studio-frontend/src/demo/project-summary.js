@@ -25,7 +25,7 @@ replicates VS Code's UI/UX with AI-powered enhancements!
 │  │ ✨ │  └────────────────┼──────────────────────────────┤   │
 │  │ AI │                  │  ┌─── PANEL ──────────────┐   │   │
 │  │   │                  │  │ 💻 Terminal  📊 Output │   │   │
-│  │ ⚙️ │                  │  │ 🐛 Debug    ⚠️ Problems│   │   │
+│  │ ⚙️ │                  │  │  Debug    ⚠️ Problems│   │   │
 │  └───┘                  │  └─────────────────────────┘   │   │
 │                                                           │   │
 │  ├─────────────── STATUS BAR ─────── ✨ AI ────────────┤   │
@@ -47,7 +47,7 @@ replicates VS Code's UI/UX with AI-powered enhancements!
   ✅ Smart suggestions and examples
   ✅ Integrated AI buttons throughout UI
 
-📝 ADVANCED EDITOR:
+ ADVANCED EDITOR:
   ✅ Monaco Editor (same as VS Code)
   ✅ Syntax highlighting for 30+ languages
   ✅ IntelliSense and auto-completion
@@ -100,7 +100,7 @@ ENJOY YOUR VS CODE STUDIO! 🎉✨
 */
 
 console.log('🚀 VS Code Studio - AI Powered IDE is ready!')
-console.log('📝 Open a file to start coding')
+console.log(' Open a file to start coding')
 console.log('✨ Click the AI button for assistance')
 console.log('💻 Use the terminal for commands')
 console.log('🎨 Enjoy the authentic VS Code experience!')

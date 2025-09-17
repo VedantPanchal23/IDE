@@ -80,10 +80,10 @@
 ```
 📁 Project Files Using Environment Variables:
 
-📄 .env
+ .env
 ├── All environment variables defined here
 
-📄 src/config/firebase.js
+ src/config/firebase.js
 ├── VITE_FIREBASE_API_KEY
 ├── VITE_FIREBASE_AUTH_DOMAIN
 ├── VITE_FIREBASE_PROJECT_ID
@@ -93,13 +93,13 @@
 ├── VITE_FIREBASE_MEASUREMENT_ID
 └── VITE_ENABLE_DEBUG
 
-📄 src/contexts/UserContext.jsx
+ src/contexts/UserContext.jsx
 └── Uses Firebase auth (configured from firebase.js)
 
-📄 src/services/FileSystemService.js
+ src/services/FileSystemService.js
 └── Uses Firestore (configured from firebase.js)
 
-📄 src/components/*.jsx
+ src/components/*.jsx
 └── Uses Firebase services through contexts/services
 ```
 

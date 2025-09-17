@@ -20,7 +20,7 @@ A fully-featured web-based IDE that replicates VS Code's UI/UX, styling, fonts, 
 - **Code Optimization**: Performance improvement suggestions
 - **Documentation**: Automatic code documentation generation
 
-### 📝 **Advanced Editor**
+###  **Advanced Editor**
 - **Monaco Editor**: The same editor that powers VS Code
 - **Syntax Highlighting**: Support for 30+ programming languages
 - **IntelliSense**: Auto-completion and error detection

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { Search, File, Folder, Clock } from 'lucide-react'
 import './QuickFilePicker.css'
 
-const QuickFilePicker = ({ 
-  isOpen, 
-  onClose, 
-  fileTree = [], 
+const QuickFilePicker = ({
+  isOpen,
+  onClose,
+  fileTree = [],
   recentFiles = [],
-  onFileSelect 
+  onFileSelect
 }) => {
   const [query, setQuery] = useState('')
   const [selectedIndex, setSelectedIndex] = useState(0)
@@ -47,9 +47,9 @@ const QuickFilePicker = ({
       .map(file => {
         const fileName = file.name.toLowerCase()
         const filePath = file.fullPath.toLowerCase()
-        
+
         let score = 0
-        
+
         // Exact match
         if (fileName === queryLower) score += 100
         // Starts with query
@@ -60,7 +60,7 @@ const QuickFilePicker = ({
         else if (filePath.includes(queryLower)) score += 40
         // Fuzzy match
         else if (fuzzyMatch(fileName, queryLower)) score += 20
-        
+
         return { ...file, score }
       })
       .filter(file => file.score > 0)
@@ -74,24 +74,24 @@ const QuickFilePicker = ({
   const fuzzyMatch = (text, pattern) => {
     let textIndex = 0
     let patternIndex = 0
-    
+
     while (textIndex < text.length && patternIndex < pattern.length) {
       if (text[textIndex] === pattern[patternIndex]) {
         patternIndex++
       }
       textIndex++
     }
-    
+
     return patternIndex === pattern.length
   }
 
   // Highlight matching characters
   const highlightMatch = (text, query) => {
     if (!query) return text
-    
+
     const regex = new RegExp(`(${query.split('').join('|')})`, 'gi')
     const parts = text.split(regex)
-    
+
     return parts.map((part, index) => {
       if (regex.test(part)) {
         return <span key={index} className="highlight">{part}</span>
@@ -145,7 +145,7 @@ const QuickFilePicker = ({
     if (listRef.current) {
       const selectedElement = listRef.current.children[selectedIndex]
       if (selectedElement) {
-        selectedElement.scrollIntoView({ 
+        selectedElement.scrollIntoView({
           block: 'nearest',
           behavior: 'smooth'
         })
@@ -161,17 +161,17 @@ const QuickFilePicker = ({
   const getFileIcon = (fileName) => {
     const ext = fileName.split('.').pop()?.toLowerCase()
     const iconMap = {
-      'js': '🟨',
+      'js': '',
       'jsx': '⚛️',
-      'ts': '🟦', 
+      'ts': '🟦',
       'tsx': '⚛️',
       'json': '📋',
       'css': '🎨',
       'html': '🌐',
-      'md': '📝',
+      'md': '',
       'py': '🐍'
     }
-    return iconMap[ext] || '📄'
+    return iconMap[ext] || ''
   }
 
   if (!isOpen) return null

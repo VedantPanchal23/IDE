@@ -14,12 +14,12 @@ console.log(`Language: ${language}`);
 // 2. Function with debugging potential
 function calculateFactorial(n) {
     console.log(`Calculating factorial of ${n}`);
-    
+
     if (n === 0 || n === 1) {
         console.log(`Base case reached: ${n}! = 1`);
         return 1;
     }
-    
+
     const result = n * calculateFactorial(n - 1);
     console.log(`${n}! = ${result}`);
     return result;
@@ -50,11 +50,11 @@ console.log("Developer profile:", developer);
 // 5. Async operation simulation
 function simulateAsyncOperation() {
     console.log("Starting async operation...");
-    
+
     return new Promise((resolve) => {
         setTimeout(() => {
-            const data = { 
-                status: "success", 
+            const data = {
+                status: "success",
                 timestamp: new Date().toISOString(),
                 data: "Async operation completed!"
             };
@@ -67,17 +67,17 @@ function simulateAsyncOperation() {
 // 6. Main execution
 async function main() {
     console.log("\n=== Function Testing ===");
-    
+
     // Test factorial calculation
     for (let i = 1; i <= 5; i++) {
         const factorial = calculateFactorial(i);
         console.log(`Final result: ${i}! = ${factorial}\n`);
     }
-    
+
     console.log("=== Array Processing ===");
     const sum = squared.reduce((acc, num) => acc + num, 0);
     console.log(`Sum of squared numbers: ${sum}`);
-    
+
     console.log("\n=== Async Testing ===");
     try {
         const asyncResult = await simulateAsyncOperation();
@@ -85,7 +85,7 @@ async function main() {
     } catch (error) {
         console.error("Async error:", error);
     }
-    
+
     console.log("\n🎉 JavaScript IDE Demo completed successfully!");
     console.log("Try setting breakpoints and using the debugger!");
 }
@@ -108,7 +108,7 @@ function testErrorHandling() {
 }
 
 function testConsoleMethods() {
-    console.log("📝 Regular log message");
+    console.log(" Regular log message");
     console.info("ℹ️ Info message");
     console.warn("⚠️ Warning message");
     console.error("❌ Error message");

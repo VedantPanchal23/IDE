@@ -23,16 +23,16 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
 
   const getFileIcon = (fileName) => {
     const extension = fileName.split('.').pop()?.toLowerCase()
-    
+
     const iconMap = {
-      'js': '🟨',
+      'js': '',
       'jsx': '⚛️',
       'ts': '🔷',
       'tsx': '⚛️',
       'json': '📋',
       'html': '🌐',
       'css': '🎨',
-      'md': '📝',
+      'md': '',
       'py': '🐍',
       'java': '☕',
       'cpp': '⚡',
@@ -44,12 +44,12 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
       'vue': '💚',
       'scss': '🎨',
       'less': '🎨',
-      'xml': '📄',
-      'yml': '📄',
-      'yaml': '📄'
+      'xml': '',
+      'yml': '',
+      'yaml': ''
     }
-    
-    return iconMap[extension] || '📄'
+
+    return iconMap[extension] || ''
   }
 
   return (
@@ -57,7 +57,7 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
       <div className="breadcrumb-content">
         {showHome && (
           <>
-            <button 
+            <button
               className="breadcrumb-segment home"
               onClick={() => handleSegmentClick(-1)}
               title="Go to workspace root"
@@ -69,10 +69,10 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
             )}
           </>
         )}
-        
+
         {directories.map((directory, index) => (
           <React.Fragment key={index}>
-            <button 
+            <button
               className="breadcrumb-segment directory"
               onClick={() => handleSegmentClick(index)}
               title={`Go to ${directory}`}
@@ -82,7 +82,7 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
             <ChevronRight size={12} className="breadcrumb-separator" />
           </React.Fragment>
         ))}
-        
+
         {fileName && (
           <div className="breadcrumb-segment file active">
             <span className="file-icon">{getFileIcon(fileName)}</span>
@@ -90,9 +90,9 @@ const Breadcrumb = ({ filePath, onNavigate, showHome = true }) => {
           </div>
         )}
       </div>
-      
+
       <div className="breadcrumb-actions">
-        <button 
+        <button
           className="breadcrumb-action"
           title="Copy path"
           onClick={() => navigator.clipboard?.writeText(filePath)}

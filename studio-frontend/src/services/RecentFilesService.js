@@ -16,19 +16,19 @@ class RecentFilesService {
 
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
       const docSnap = await getDoc(recentFilesRef)
-      
+
       if (docSnap.exists()) {
         const data = docSnap.data()
         return data.files || []
       }
-      
+
       // If document doesn't exist (new user), create it with empty structure
       await setDoc(recentFilesRef, {
         files: [],
         lastUpdated: new Date().toISOString(),
         createdAt: new Date().toISOString()
       })
-      
+
       return []
     } catch (error) {
       console.error('Error getting recent files:', error)
@@ -45,7 +45,7 @@ class RecentFilesService {
       }
 
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
-      
+
       const recentFileEntry = {
         id: file.id,
         name: file.name,
@@ -59,17 +59,17 @@ class RecentFilesService {
       // Get existing recent files
       const docSnap = await getDoc(recentFilesRef)
       let recentFiles = []
-      
+
       if (docSnap.exists()) {
         recentFiles = docSnap.data().files || []
       }
 
       // Remove if already exists (to update position)
       recentFiles = recentFiles.filter(rf => rf.id !== file.id)
-      
+
       // Add to beginning
       recentFiles.unshift(recentFileEntry)
-      
+
       // Limit to max recent files
       if (recentFiles.length > this.maxRecentFiles) {
         recentFiles = recentFiles.slice(0, this.maxRecentFiles)
@@ -98,19 +98,19 @@ class RecentFilesService {
 
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
       const docSnap = await getDoc(recentFilesRef)
-      
+
       if (docSnap.exists()) {
         const recentFiles = docSnap.data().files || []
         const updatedFiles = recentFiles.filter(rf => rf.id !== fileId)
-        
+
         await setDoc(recentFilesRef, {
           files: updatedFiles,
           lastUpdated: new Date().toISOString()
         })
-        
+
         return updatedFiles
       }
-      
+
       return []
     } catch (error) {
       console.error('Error removing recent file:', error)
@@ -122,12 +122,12 @@ class RecentFilesService {
   async clearRecentFiles(userId) {
     try {
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
-      
+
       await setDoc(recentFilesRef, {
         files: [],
         lastUpdated: new Date().toISOString()
       })
-      
+
       return []
     } catch (error) {
       console.error('Error clearing recent files:', error)
@@ -140,7 +140,7 @@ class RecentFilesService {
     try {
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
       const docSnap = await getDoc(recentFilesRef)
-      
+
       if (docSnap.exists()) {
         const recentFiles = docSnap.data().files || []
         const updatedFiles = recentFiles.map(rf => {
@@ -149,22 +149,22 @@ class RecentFilesService {
           }
           return rf
         })
-        
+
         // Sort: pinned files first, then by lastOpened
         updatedFiles.sort((a, b) => {
           if (a.pinned && !b.pinned) return -1
           if (!a.pinned && b.pinned) return 1
           return new Date(b.lastOpened) - new Date(a.lastOpened)
         })
-        
+
         await setDoc(recentFilesRef, {
           files: updatedFiles,
           lastUpdated: new Date().toISOString()
         })
-        
+
         return updatedFiles
       }
-      
+
       return []
     } catch (error) {
       console.error('Error toggling pin recent file:', error)
@@ -177,28 +177,28 @@ class RecentFilesService {
     try {
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
       const docSnap = await getDoc(recentFilesRef)
-      
+
       if (docSnap.exists()) {
         const recentFiles = docSnap.data().files || []
         const updatedFiles = recentFiles.map(rf => {
           if (rf.id === fileId) {
-            return { 
-              ...rf, 
+            return {
+              ...rf,
               ...updates,
               lastOpened: new Date().toISOString()
             }
           }
           return rf
         })
-        
+
         await setDoc(recentFilesRef, {
           files: updatedFiles,
           lastUpdated: new Date().toISOString()
         })
-        
+
         return updatedFiles
       }
-      
+
       return []
     } catch (error) {
       console.error('Error updating recent file:', error)
@@ -227,9 +227,9 @@ class RecentFilesService {
 
       const recentFiles = await this.getRecentFiles(userId)
       const existingFileIds = new Set(existingFiles.map(f => f.id))
-      
+
       const validRecentFiles = recentFiles.filter(rf => existingFileIds.has(rf.id))
-      
+
       if (validRecentFiles.length !== recentFiles.length) {
         const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
         await setDoc(recentFilesRef, {
@@ -237,7 +237,7 @@ class RecentFilesService {
           lastUpdated: new Date().toISOString()
         })
       }
-      
+
       return validRecentFiles
     } catch (error) {
       console.error('Error cleaning up recent files:', error)
@@ -248,10 +248,10 @@ class RecentFilesService {
   // Get file type icon based on extension
   getFileTypeIcon(fileName) {
     const extension = fileName.split('.').pop()?.toLowerCase()
-    
+
     const iconMap = {
       // Programming languages
-      'js': '📄',
+      'js': '',
       'jsx': '⚛️',
       'ts': '📘',
       'tsx': '⚛️',
@@ -266,7 +266,7 @@ class RecentFilesService {
       'rust': '🦀',
       'swift': '🦉',
       'kt': '📱',
-      
+
       // Web technologies
       'html': '🌐',
       'htm': '🌐',
@@ -276,22 +276,22 @@ class RecentFilesService {
       'less': '🎨',
       'vue': '💚',
       'svelte': '🧡',
-      
+
       // Data formats
       'json': '📋',
-      'xml': '📄',
-      'yaml': '📄',
-      'yml': '📄',
+      'xml': '',
+      'yaml': '',
+      'yml': '',
       'csv': '📊',
       'sql': '🗄️',
-      
+
       // Documents
-      'md': '📝',
-      'txt': '📄',
+      'md': '',
+      'txt': '',
       'pdf': '📕',
       'doc': '📘',
       'docx': '📘',
-      
+
       // Images
       'png': '🖼️',
       'jpg': '🖼️',
@@ -299,7 +299,7 @@ class RecentFilesService {
       'gif': '🖼️',
       'svg': '🎨',
       'webp': '🖼️',
-      
+
       // Config files
       'config': '⚙️',
       'conf': '⚙️',
@@ -311,18 +311,18 @@ class RecentFilesService {
       'package': '📦',
       'lock': '🔒'
     }
-    
-    return iconMap[extension] || '📄'
+
+    return iconMap[extension] || ''
   }
 
   // Format file size for display
   formatFileSize(bytes) {
     if (bytes === 0) return '0 B'
-    
+
     const k = 1024
     const sizes = ['B', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
   }
 
@@ -331,19 +331,19 @@ class RecentFilesService {
     const now = new Date()
     const opened = new Date(timestamp)
     const diffInMinutes = Math.floor((now - opened) / (1000 * 60))
-    
+
     if (diffInMinutes < 1) return 'Just now'
     if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60)
     if (diffInHours < 24) return `${diffInHours}h ago`
-    
+
     const diffInDays = Math.floor(diffInHours / 24)
     if (diffInDays < 7) return `${diffInDays}d ago`
-    
+
     const diffInWeeks = Math.floor(diffInDays / 7)
     if (diffInWeeks < 4) return `${diffInWeeks}w ago`
-    
+
     return opened.toLocaleDateString()
   }
 
@@ -356,7 +356,7 @@ class RecentFilesService {
       }
 
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
-      
+
       // Check if already initialized
       const docSnap = await getDoc(recentFilesRef)
       if (docSnap.exists()) {
@@ -386,11 +386,11 @@ class RecentFilesService {
 
       const recentFilesRef = doc(db, 'users', userId, 'metadata', 'recentFiles')
       const docSnap = await getDoc(recentFilesRef)
-      
+
       if (!docSnap.exists()) {
         return await this.initializeNewUser(userId)
       }
-      
+
       return true
     } catch (error) {
       console.error('Error checking user initialization:', error)

@@ -40,7 +40,7 @@ const AIAssistant = ({ isOpen, onClose }) => {
     try {
       // Simulate AI response (replace with actual AI API call)
       const response = await simulateAIResponse(inputMessage)
-      
+
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
@@ -94,7 +94,7 @@ useEffect(() => {
     } else if (lowerMessage.includes('debug') || lowerMessage.includes('error')) {
       return `Here are some debugging strategies:
 
-🐛 **Common debugging techniques:**
+ **Common debugging techniques:**
 • Use \`console.log()\` to inspect values
 • Check the browser's developer tools
 • Use React DevTools extension
@@ -191,7 +191,7 @@ Feel free to ask specific questions or request code examples!`
               </div>
             </div>
           ))}
-          
+
           {isLoading && (
             <div className="message assistant">
               <div className="message-avatar">
@@ -206,7 +206,7 @@ Feel free to ask specific questions or request code examples!`
               </div>
             </div>
           )}
-          
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -219,7 +219,7 @@ Feel free to ask specific questions or request code examples!`
             rows="3"
             disabled={isLoading}
           />
-          <button 
+          <button
             onClick={handleSendMessage}
             disabled={!inputMessage.trim() || isLoading}
             className="send-button"

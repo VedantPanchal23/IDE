@@ -11,10 +11,10 @@ backend/
 ├── 📁 middleware/      # Express middleware
 ├── 📁 models/          # Data models
 ├── 📁 routes/          # API routes
-├── 📄 app.js           # Express app configuration
-├── 📄 server.cjs       # Main server entry point
-├── 📄 server-simple.cjs # Simple server variant
-└── 📄 package.json     # Dependencies and scripts
+├──  app.js           # Express app configuration
+├──  server.cjs       # Main server entry point
+├──  server-simple.cjs # Simple server variant
+└──  package.json     # Dependencies and scripts
 ```
 
 ## 🚀 Quick Start
@@ -88,7 +88,7 @@ DB_CONNECTION_STRING=your-database-url
 - JWT-based authentication
 - Environment variable configuration
 
-## 📝 Contributing
+##  Contributing
 
 1. Follow the existing code structure
 2. Add proper error handling
