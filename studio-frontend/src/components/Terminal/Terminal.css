@@ -1,0 +1,286 @@
+.terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  border-top: 1px solid #3c3c3c;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  background: #2d2d30;
+  border-bottom: 1px solid #3c3c3c;
+  min-height: 35px;
+}
+
+.terminal-tabs {
+  display: flex;
+  align-items: center;
+}
+
+.terminal-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: #cccccc;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.terminal-tab:hover {
+  background: #37373d;
+  color: #ffffff;
+}
+
+.terminal-tab.active {
+  color: #ffffff;
+  border-bottom-color: #007acc;
+  background: #37373d;
+}
+
+.terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #cccccc;
+  padding: 8px 12px;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+}
+
+.terminal-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 3px;
+  background: #0e639c;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.terminal-btn:hover:not(:disabled) {
+  background: #1177bb;
+}
+
+.terminal-btn:disabled {
+  background: #3c3c3c;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.terminal-btn-run {
+  background: #16825d;
+}
+
+.terminal-btn-run:hover:not(:disabled) {
+  background: #1a9668;
+}
+
+.terminal-btn-debug {
+  background: #cc6633;
+}
+
+.terminal-btn-debug:hover:not(:disabled) {
+  background: #d4773d;
+}
+
+.terminal-btn-stop {
+  background: #a1260d;
+}
+
+.terminal-btn-stop:hover:not(:disabled) {
+  background: #b92d12;
+}
+
+.terminal-btn-clear {
+  background: #6c6c6c;
+}
+
+.terminal-btn-clear:hover:not(:disabled) {
+  background: #777;
+}
+
+.terminal-btn-close {
+  background: #c72e29;
+}
+
+.terminal-btn-close:hover:not(:disabled) {
+  background: #d73a35;
+}
+
+.terminal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  background: #1e1e1e;
+}
+
+.terminal-output {
+  min-height: 100%;
+}
+
+.terminal-line {
+  display: flex;
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+.terminal-timestamp {
+  color: #666;
+  font-size: 11px;
+  margin-right: 8px;
+  white-space: nowrap;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.terminal-text {
+  flex: 1;
+  margin: 0;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-command .terminal-text {
+  color: #569cd6;
+  font-weight: 600;
+}
+
+.terminal-output .terminal-text {
+  color: #d4d4d4;
+}
+
+.terminal-error .terminal-text {
+  color: #f44747;
+}
+
+.terminal-warning .terminal-text {
+  color: #ffcc02;
+}
+
+.terminal-info .terminal-text {
+  color: #75beff;
+}
+
+.terminal-debug .terminal-text {
+  color: #c586c0;
+}
+
+.terminal-result .terminal-text {
+  color: #4ec9b0;
+  font-weight: 600;
+}
+
+.terminal-running {
+  color: #ffcc02;
+  animation: pulse 1.5s infinite;
+}
+
+.terminal-spinner {
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.terminal-input-form {
+  border-top: 1px solid #3c3c3c;
+  background: #252526;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.terminal-prompt {
+  color: #569cd6;
+  font-weight: bold;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #d4d4d4;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  padding: 4px 0;
+}
+
+.terminal-input::placeholder {
+  color: #6a6a6a;
+}
+
+.terminal-input:disabled {
+  color: #6a6a6a;
+}
+
+/* Scrollbar styling */
+.terminal-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.terminal-content::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.terminal-content::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 6px;
+}
+
+.terminal-content::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}
+
+/* Selection styling */
+.terminal-text::selection {
+  background: #264f78;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .terminal-btn {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+  
+  .terminal-controls {
+    gap: 2px;
+  }
+  
+  .terminal {
+    font-size: 13px;
+  }
+}

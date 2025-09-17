@@ -1,0 +1,117 @@
+.panel-resizer {
+  position: relative;
+  background: var(--vscode-sash-hoverBorder);
+  transition: background-color 0.1s ease;
+  z-index: 100;
+}
+
+.panel-resizer.horizontal {
+  width: 4px;
+  cursor: col-resize;
+  min-width: 4px;
+}
+
+.panel-resizer.vertical {
+  height: 4px;
+  cursor: row-resize;
+  min-height: 4px;
+}
+
+.panel-resizer:hover {
+  background: var(--vscode-sash-activeBorder);
+}
+
+.panel-resizer.resizing {
+  background: var(--vscode-sash-activeBorder);
+}
+
+.panel-resizer.disabled {
+  cursor: default;
+  background: transparent;
+}
+
+.panel-resizer.disabled:hover {
+  background: transparent;
+}
+
+.resizer-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resizer-indicator {
+  background: var(--vscode-sash-hoverBorder);
+  transition: all 0.1s ease;
+  opacity: 0;
+}
+
+.panel-resizer.horizontal .resizer-indicator {
+  width: 1px;
+  height: 20px;
+}
+
+.panel-resizer.vertical .resizer-indicator {
+  width: 20px;
+  height: 1px;
+}
+
+.panel-resizer:hover .resizer-indicator,
+.panel-resizer.resizing .resizer-indicator {
+  opacity: 1;
+  background: var(--vscode-sash-activeBorder);
+}
+
+.panel-resizer.horizontal:hover .resizer-indicator,
+.panel-resizer.horizontal.resizing .resizer-indicator {
+  width: 2px;
+}
+
+.panel-resizer.vertical:hover .resizer-indicator,
+.panel-resizer.vertical.resizing .resizer-indicator {
+  height: 2px;
+}
+
+/* Focus styles for accessibility */
+.panel-resizer:focus {
+  outline: 2px solid var(--vscode-focusBorder);
+  outline-offset: -1px;
+}
+
+.panel-resizer:focus .resizer-indicator {
+  opacity: 1;
+  background: var(--vscode-focusBorder);
+}
+
+/* VS Code color variables for sash/resizer */
+:root {
+  --vscode-sash-hoverBorder: #2b2b2b;
+  --vscode-sash-activeBorder: #007acc;
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vscode-sash-hoverBorder: #2b2b2b;
+    --vscode-sash-activeBorder: #007acc;
+  }
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  :root {
+    --vscode-sash-hoverBorder: #c8c8c8;
+    --vscode-sash-activeBorder: #005a9e;
+  }
+}
+
+/* Prevent text selection during resize */
+.panel-resizer.resizing,
+.panel-resizer.resizing * {
+  user-select: none !important;
+}

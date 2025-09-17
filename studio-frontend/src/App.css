@@ -1,0 +1,132 @@
+/* VS Code Theme Variables */
+:root {
+  /* Dark Theme Colors */
+  --vscode-editor-background: #1e1e1e;
+  --vscode-editor-foreground: #d4d4d4;
+  --vscode-sideBar-background: #252526;
+  --vscode-sideBar-foreground: #cccccc;
+  --vscode-sideBar-border: #2d2d30;
+  --vscode-activityBar-background: #2f3129;
+  --vscode-activityBar-foreground: #ffffff;
+  --vscode-activityBar-activeBorder: #007acc;
+  --vscode-statusBar-background: #007acc;
+  --vscode-statusBar-foreground: #ffffff;
+  --vscode-statusBar-noFolderBackground: #68217a;
+  --vscode-titleBar-activeBackground: #3c3c3c;
+  --vscode-titleBar-activeForeground: #cccccc;
+  --vscode-titleBar-inactiveBackground: #3c3c3c;
+  --vscode-titleBar-inactiveForeground: #999999;
+  --vscode-tab-activeBackground: #1e1e1e;
+  --vscode-tab-activeForeground: #ffffff;
+  --vscode-tab-inactiveBackground: #2d2d2d;
+  --vscode-tab-inactiveForeground: #969696;
+  --vscode-tab-border: #252526;
+  --vscode-panel-background: #1e1e1e;
+  --vscode-panel-border: #2d2d30;
+  --vscode-list-activeSelectionBackground: #094771;
+  --vscode-list-activeSelectionForeground: #ffffff;
+  --vscode-list-hoverBackground: #2a2d2e;
+  --vscode-list-focusBackground: #062f4a;
+  --vscode-button-background: #0e639c;
+  --vscode-button-foreground: #ffffff;
+  --vscode-button-hoverBackground: #1177bb;
+  --vscode-input-background: #3c3c3c;
+  --vscode-input-foreground: #cccccc;
+  --vscode-input-border: #3c3c3c;
+  --vscode-scrollbar-shadow: #000000;
+  --vscode-widget-shadow: rgba(0, 0, 0, 0.36);
+  --vscode-descriptionForeground: #9d9d9d;
+  --vscode-foreground: #cccccc;
+  
+  /* Keybinding Label Colors */
+  --vscode-keybindingLabel-background: #8080802b;
+  --vscode-keybindingLabel-foreground: #cccccc;
+  --vscode-keybindingLabel-border: #8080802b;
+  
+  /* Additional VS Code Colors */
+  --vscode-editorGroupHeader-tabsBackground: #2d2d2d;
+  --vscode-editorGroupHeader-tabsBorder: #252526;
+  --vscode-tab-activeBorder: #007acc;
+  --vscode-tab-hoverBackground: #1e1e1e;
+  --vscode-tab-hoverForeground: #ffffff;
+  --vscode-tab-unfocusedInactiveForeground: #969696;
+  --vscode-button-border: #007acc;
+  --vscode-toolbar-hoverBackground: #2a2d2e;
+  --vscode-panelTitle-activeBorder: #007acc;
+  --vscode-panelTitle-activeForeground: #ffffff;
+  --vscode-icon-foreground: #cccccc;
+  --vscode-testing-iconPassed: #73c991;
+  --vscode-testing-iconFailed: #f85149;
+  --vscode-errorForeground: #f85149;
+  --vscode-textCodeBlock-background: #0d1117;
+  --vscode-widget-border: #454545;
+  --vscode-scrollbarSlider-background: rgba(121, 121, 121, 0.4);
+  --vscode-scrollbarSlider-hoverBackground: rgba(100, 100, 100, 0.7);
+  --vscode-scrollbarSlider-activeBackground: rgba(191, 191, 191, 0.4);
+  
+  /* Fonts */
+  --vscode-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --vscode-editor-font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace;
+  --vscode-font-size: 13px;
+  --vscode-editor-font-size: 14px;
+  --vscode-font-weight: 400;
+  
+  /* Spacing */
+  --vscode-border-radius: 3px;
+  --vscode-focus-border: #007acc;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-editor-foreground);
+  background-color: var(--vscode-editor-background);
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  overflow: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(121, 121, 121, 0.4);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.7);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: var(--vscode-editor-background);
+}

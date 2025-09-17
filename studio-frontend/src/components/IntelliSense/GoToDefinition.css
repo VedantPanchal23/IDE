@@ -1,0 +1,243 @@
+.definition-tooltip {
+  position: absolute;
+  background: var(--vscode-editorHoverWidget-background);
+  border: 1px solid var(--vscode-editorHoverWidget-border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--vscode-editorHoverWidget-foreground);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  z-index: 1000;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.definition-tooltip-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.definition-tooltip-symbol {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: var(--vscode-editorHoverWidget-foreground);
+}
+
+.definition-tooltip-hint {
+  color: var(--vscode-descriptionForeground);
+  font-size: 10px;
+}
+
+.definition-tooltip-hint kbd {
+  background: var(--vscode-keybindingLabel-background);
+  border: 1px solid var(--vscode-keybindingLabel-border);
+  border-radius: 2px;
+  padding: 1px 3px;
+  font-size: 9px;
+  color: var(--vscode-keybindingLabel-foreground);
+}
+
+.peek-definition-widget {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--vscode-peekViewEditor-background);
+  border: 1px solid var(--vscode-peekViewEditor-border);
+  border-radius: 6px;
+  width: 600px;
+  max-width: 90vw;
+  max-height: 400px;
+  z-index: 10000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: peekSlideIn 0.2s ease-out;
+}
+
+.peek-definition-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--vscode-peekViewTitle-background);
+  border-bottom: 1px solid var(--vscode-peekViewEditor-border);
+  color: var(--vscode-peekViewTitleLabel-foreground);
+}
+
+.peek-definition-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.peek-definition-file {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--vscode-peekViewTitleDescription-foreground);
+  font-size: 11px;
+  margin-left: 8px;
+}
+
+.peek-definition-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.peek-definition-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--vscode-icon-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.peek-definition-btn:hover {
+  background: var(--vscode-toolbar-hoverBackground);
+}
+
+.peek-definition-content {
+  padding: 12px;
+  background: var(--vscode-peekViewEditor-background);
+  color: var(--vscode-peekViewEditor-foreground);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.peek-definition-signature {
+  font-family: var(--vscode-editor-font-family);
+  font-size: 12px;
+  background: var(--vscode-textCodeBlock-background);
+  border: 1px solid var(--vscode-textBlockQuote-border);
+  border-radius: 3px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  color: var(--vscode-textPreformat-foreground);
+  white-space: pre-wrap;
+}
+
+.peek-definition-description {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.peek-definition-source {
+  background: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-panel-border);
+  border-radius: 3px;
+  padding: 12px;
+  font-family: var(--vscode-editor-font-family);
+  font-size: 11px;
+  overflow-x: auto;
+}
+
+.peek-definition-source pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.peek-definition-source code {
+  color: var(--vscode-editor-foreground);
+  background: transparent;
+}
+
+/* Go to definition link styling in editor */
+.monaco-editor .goto-definition-link {
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--vscode-textLink-foreground);
+}
+
+.monaco-editor .goto-definition-link:hover {
+  color: var(--vscode-textLink-activeForeground);
+}
+
+/* Definition highlight in editor */
+.monaco-editor .definition-highlight {
+  background: rgba(173, 214, 255, 0.15);
+  border: 1px solid rgba(173, 214, 255, 0.4);
+}
+
+.monaco-editor .definition-highlight-word {
+  background: rgba(173, 214, 255, 0.25);
+}
+
+/* Peek view result styling */
+.monaco-editor .peekview-widget {
+  background: var(--vscode-peekViewResult-background) !important;
+  border: 1px solid var(--vscode-peekViewResult-border) !important;
+}
+
+.monaco-editor .peekview-widget .head {
+  background: var(--vscode-peekViewTitle-background) !important;
+  border-bottom: 1px solid var(--vscode-peekViewResult-border) !important;
+}
+
+.monaco-editor .peekview-widget .head .peekview-title {
+  color: var(--vscode-peekViewTitleLabel-foreground) !important;
+}
+
+.monaco-editor .peekview-widget .head .peekview-actions {
+  color: var(--vscode-peekViewTitleDescription-foreground) !important;
+}
+
+.monaco-editor .peekview-widget .body {
+  background: var(--vscode-peekViewEditor-background) !important;
+}
+
+/* Scrollbar styling */
+.peek-definition-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.peek-definition-content::-webkit-scrollbar-track {
+  background: var(--vscode-scrollbarSlider-background);
+}
+
+.peek-definition-content::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background);
+  border-radius: 4px;
+}
+
+.peek-definition-content::-webkit-scrollbar-thumb:hover {
+  background: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+/* Animation */
+@keyframes peekSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .peek-definition-widget {
+    width: 95%;
+    max-height: 60vh;
+  }
+  
+  .peek-definition-content {
+    max-height: 50vh;
+  }
+}

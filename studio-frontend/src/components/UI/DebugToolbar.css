@@ -1,0 +1,164 @@
+.debug-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--vscode-toolbar-background, #2d2d30);
+  border-bottom: 1px solid var(--vscode-panel-border);
+  min-height: 40px;
+}
+
+.debug-toolbar-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.debug-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vscode-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.debug-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.debug-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 3px;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  min-height: 28px;
+}
+
+.debug-btn:hover:not(:disabled) {
+  background: var(--vscode-button-hoverBackground);
+}
+
+.debug-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--vscode-button-background);
+}
+
+.debug-btn.start {
+  background: var(--vscode-debugIcon-startForeground, #4ec9b0);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-btn.start:hover {
+  background: var(--vscode-debugIcon-startForeground, #4ec9b0);
+  opacity: 0.8;
+}
+
+.debug-btn.stop {
+  background: var(--vscode-debugIcon-stopForeground, #f85149);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-btn.stop:hover {
+  background: var(--vscode-debugIcon-stopForeground, #f85149);
+  opacity: 0.8;
+}
+
+.debug-btn.restart {
+  background: var(--vscode-debugIcon-restartForeground, #ffa500);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-btn.restart:hover {
+  background: var(--vscode-debugIcon-restartForeground, #ffa500);
+  opacity: 0.8;
+}
+
+.debug-btn.continue {
+  background: var(--vscode-debugIcon-continueForeground, #4ec9b0);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-btn.continue:hover {
+  background: var(--vscode-debugIcon-continueForeground, #4ec9b0);
+  opacity: 0.8;
+}
+
+.debug-btn.pause {
+  background: var(--vscode-debugIcon-pauseForeground, #ffa500);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-btn.pause:hover {
+  background: var(--vscode-debugIcon-pauseForeground, #ffa500);
+  opacity: 0.8;
+}
+
+.debug-separator {
+  width: 1px;
+  height: 20px;
+  background: var(--vscode-panel-border);
+  margin: 0 6px;
+}
+
+.debug-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.debug-status-indicator {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.debug-status-indicator.active {
+  background: var(--vscode-debugIcon-startForeground, #4ec9b0);
+  color: var(--vscode-button-foreground);
+}
+
+.debug-status-indicator.inactive {
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+}
+
+/* Animation for debugging state */
+.debug-status-indicator.active {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .debug-btn span {
+    display: none;
+  }
+  
+  .debug-btn {
+    padding: 6px;
+    min-width: 28px;
+  }
+  
+  .debug-title {
+    display: none;
+  }
+}

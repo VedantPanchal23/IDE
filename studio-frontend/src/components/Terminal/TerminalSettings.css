@@ -1,0 +1,448 @@
+/* Terminal Settings Styles */
+.terminal-settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.terminal-settings-modal {
+  width: 800px;
+  max-width: 90vw;
+  height: 600px;
+  max-height: 90vh;
+  background: var(--vscode-editor-background, #1e1e1e);
+  border: 1px solid var(--vscode-widget-border, #3c3c3c);
+  border-radius: 8px;
+  box-shadow: var(--vscode-widget-shadow, 0 8px 32px rgba(0, 0, 0, 0.4));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header */
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--vscode-titleBar-activeBackground, #2d2d30);
+  border-bottom: 1px solid var(--vscode-titleBar-border, #3c3c3c);
+}
+
+.settings-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vscode-titleBar-activeForeground, #cccccc);
+}
+
+.settings-close {
+  background: transparent;
+  border: none;
+  color: var(--vscode-titleBar-activeForeground, #cccccc);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.settings-close:hover {
+  background: var(--vscode-toolbar-hoverBackground, rgba(255, 255, 255, 0.1));
+}
+
+/* Content */
+.settings-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.settings-sidebar {
+  width: 200px;
+  background: var(--vscode-sideBar-background, #252526);
+  border-right: 1px solid var(--vscode-sideBar-border, #3c3c3c);
+  padding: 8px 0;
+  overflow-y: auto;
+}
+
+.settings-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: var(--vscode-sideBar-foreground, #cccccc);
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.settings-tab:hover {
+  background: var(--vscode-list-hoverBackground, #2a2d2e);
+}
+
+.settings-tab.active {
+  background: var(--vscode-list-activeSelectionBackground, #094771);
+  color: var(--vscode-list-activeSelectionForeground, #ffffff);
+  border-left-color: var(--vscode-focusBorder, #007acc);
+}
+
+/* Main Content */
+.settings-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.settings-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.settings-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-main::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background, #424242);
+  border-radius: 4px;
+}
+
+.settings-main::-webkit-scrollbar-thumb:hover {
+  background: var(--vscode-scrollbarSlider-hoverBackground, #4f4f4f);
+}
+
+/* Settings Section */
+.settings-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--vscode-foreground, #cccccc);
+  border-bottom: 1px solid var(--vscode-widget-border, #3c3c3c);
+  padding-bottom: 8px;
+}
+
+.setting-item {
+  margin-bottom: 20px;
+}
+
+.setting-item label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+.setting-item input,
+.setting-item select,
+.setting-item textarea {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--vscode-input-background, #3c3c3c);
+  border: 1px solid var(--vscode-input-border, #3c3c3c);
+  border-radius: 4px;
+  color: var(--vscode-input-foreground, #cccccc);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.setting-item input:focus,
+.setting-item select:focus,
+.setting-item textarea:focus {
+  border-color: var(--vscode-focusBorder, #007acc);
+  box-shadow: 0 0 0 1px var(--vscode-focusBorder, #007acc);
+}
+
+.setting-item input[type="range"] {
+  width: calc(100% - 60px);
+  margin-right: 12px;
+}
+
+.range-value {
+  font-size: 14px;
+  color: var(--vscode-descriptionForeground, #cccccc99);
+  min-width: 48px;
+  display: inline-block;
+  text-align: right;
+}
+
+.setting-item textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+}
+
+/* Checkbox Items */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.checkbox-item label {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Theme Grid */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.theme-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 2px solid var(--vscode-widget-border, #3c3c3c);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--vscode-button-secondaryBackground, transparent);
+}
+
+.theme-option:hover {
+  border-color: var(--vscode-button-border, #3c3c3c);
+  background: var(--vscode-button-secondaryHoverBackground, rgba(255, 255, 255, 0.05));
+}
+
+.theme-option.selected {
+  border-color: var(--vscode-focusBorder, #007acc);
+  background: var(--vscode-list-activeSelectionBackground, #094771);
+}
+
+.theme-preview {
+  width: 40px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--vscode-widget-border, #3c3c3c);
+}
+
+.theme-option span {
+  font-size: 12px;
+  text-align: center;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+/* Shortcuts List */
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shortcut-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--vscode-button-secondaryBackground, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--vscode-widget-border, #3c3c3c);
+  border-radius: 6px;
+}
+
+.shortcut-action {
+  font-size: 14px;
+  color: var(--vscode-foreground, #cccccc);
+}
+
+.shortcut-item kbd {
+  background: var(--vscode-keybindingLabel-background, #8080807a);
+  border: 1px solid var(--vscode-keybindingLabel-border, #969696);
+  border-radius: 3px;
+  color: var(--vscode-keybindingLabel-foreground, #cccccc);
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: 11px;
+  padding: 2px 6px;
+  text-transform: uppercase;
+}
+
+/* Footer */
+.settings-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--vscode-editorWidget-background, #252526);
+  border-top: 1px solid var(--vscode-widget-border, #3c3c3c);
+}
+
+.footer-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.settings-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.settings-button.primary {
+  background: var(--vscode-button-background, #0e639c);
+  color: var(--vscode-button-foreground, #ffffff);
+  border-color: var(--vscode-button-background, #0e639c);
+}
+
+.settings-button.primary:hover {
+  background: var(--vscode-button-hoverBackground, #1177bb);
+}
+
+.settings-button.secondary {
+  background: var(--vscode-button-secondaryBackground, transparent);
+  color: var(--vscode-button-secondaryForeground, #cccccc);
+  border-color: var(--vscode-button-border, #3c3c3c);
+}
+
+.settings-button.secondary:hover {
+  background: var(--vscode-button-secondaryHoverBackground, rgba(255, 255, 255, 0.05));
+}
+
+.settings-button:focus-visible {
+  outline: 2px solid var(--vscode-focusBorder, #007acc);
+  outline-offset: 1px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .terminal-settings-modal {
+    width: 95vw;
+    height: 95vh;
+  }
+  
+  .settings-content {
+    flex-direction: column;
+  }
+  
+  .settings-sidebar {
+    width: 100%;
+    height: auto;
+    display: flex;
+    overflow-x: auto;
+    padding: 8px;
+    border-right: none;
+    border-bottom: 1px solid var(--vscode-sideBar-border, #3c3c3c);
+  }
+  
+  .settings-tab {
+    white-space: nowrap;
+    min-width: auto;
+    padding: 8px 12px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .settings-tab.active {
+    border-left: none;
+    border-bottom-color: var(--vscode-focusBorder, #007acc);
+  }
+  
+  .settings-main {
+    padding: 16px;
+  }
+  
+  .theme-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  
+  .settings-footer {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .footer-actions {
+    justify-content: stretch;
+  }
+  
+  .settings-button {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Animation for smooth transitions */
+.setting-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar for webkit */
+.settings-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-sidebar::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background, #424242);
+  border-radius: 3px;
+}
+
+.settings-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--vscode-scrollbarSlider-hoverBackground, #4f4f4f);
+}

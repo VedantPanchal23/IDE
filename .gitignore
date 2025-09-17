@@ -1,0 +1,75 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
+
+# Vite output
+.vite/
+
+# IDE files
+.vscode/
+.idea/
+
+# Misc
+*.local
+*.cache
+
+# Ignore coverage reports
+coverage/
+
+# Ignore next.js build
+.next/
+
+# Ignore static exports
+out/
+
+# Ignore test coverage
+coverage/
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Ignore firebase emulators
+firebase-debug.log
+.firebaserc
+
+# Ignore by OS
+*.swp
+*.swo
+
+# Ignore by editor
+*.sublime-workspace
+*.sublime-project
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore backup files
+*~
+*.bak
+*.tmp
+
+# Ignore all .env files recursively
+**/.env*

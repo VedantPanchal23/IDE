@@ -1,0 +1,166 @@
+:root {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  
+  /* VS Code Dark Theme Variables */
+  --vscode-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --vscode-font-size: 13px;
+  --vscode-foreground: #cccccc;
+  --vscode-descriptionForeground: #999999;
+  
+  /* Editor */
+  --vscode-editor-background: #1e1e1e;
+  --vscode-editor-foreground: #d4d4d4;
+  --vscode-editor-lineHighlightBorder: #2a2a2a;
+  
+  /* Title Bar */
+  --vscode-titleBar-activeBackground: #2d2d30;
+  --vscode-titleBar-activeForeground: #cccccc;
+  --vscode-titleBar-hoverBackground: rgba(255, 255, 255, 0.1);
+  --vscode-titleBar-border: #3e3e42;
+  
+  /* Activity Bar */
+  --vscode-activityBar-background: #333333;
+  --vscode-activityBar-foreground: #ffffff;
+  --vscode-activityBar-inactiveForeground: #999999;
+  --vscode-activityBar-border: #2d2d30;
+  --vscode-activityBar-activeBorder: #007acc;
+  --vscode-activityBar-activeBackground: rgba(255, 255, 255, 0.1);
+  
+  /* Side Bar */
+  --vscode-sideBar-background: #252526;
+  --vscode-sideBar-foreground: #cccccc;
+  --vscode-sideBar-border: #2d2d30;
+  --vscode-sideBarTitle-foreground: #cccccc;
+  
+  /* Lists */
+  --vscode-list-activeSelectionBackground: #094771;
+  --vscode-list-activeSelectionForeground: #ffffff;
+  --vscode-list-hoverBackground: #2a2d2e;
+  --vscode-list-focusBackground: #062f4a;
+  
+  /* Input */
+  --vscode-input-background: #3c3c3c;
+  --vscode-input-foreground: #cccccc;
+  --vscode-input-border: #3c3c3c;
+  --vscode-input-placeholderForeground: #999999;
+  --vscode-focusBorder: #007fd4;
+  
+  /* Buttons */
+  --vscode-button-background: #0e639c;
+  --vscode-button-foreground: #ffffff;
+  --vscode-button-hoverBackground: #1177bb;
+  
+  /* Panel */
+  --vscode-panel-background: #1e1e1e;
+  --vscode-panel-border: #2d2d30;
+  
+  /* Status Bar */
+  --vscode-statusBar-background: #007acc;
+  --vscode-statusBar-foreground: #ffffff;
+  
+  /* Badge */
+  --vscode-badge-background: #007acc;
+  --vscode-badge-foreground: #ffffff;
+  
+  /* Quick Input */
+  --vscode-quickInput-background: #252526;
+  --vscode-quickInput-foreground: #cccccc;
+  --vscode-quickInput-border: #3c3c3c;
+  --vscode-quickInputList-focusBackground: #094771;
+  --vscode-quickInputList-focusForeground: #ffffff;
+  
+  /* Keybinding Label */
+  --vscode-keybindingLabel-background: #3c3c3c;
+  --vscode-keybindingLabel-foreground: #cccccc;
+  --vscode-keybindingLabel-border: #666666;
+  
+  /* Tree */
+  --vscode-tree-indentGuidesStroke: #585858;
+  
+  /* Symbol Icons */
+  --vscode-symbolIcon-fileForeground: #cccccc;
+  
+  color: var(--vscode-foreground);
+  background-color: var(--vscode-editor-background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}

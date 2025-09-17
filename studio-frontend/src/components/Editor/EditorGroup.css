@@ -1,0 +1,287 @@
+.editor-group {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  position: relative;
+  overflow: hidden;
+}
+
+.editor-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--vscode-descriptionForeground);
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--vscode-progressBar-background);
+  border-top: 2px solid var(--vscode-focusBorder);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.editor-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.welcome-content h2 {
+  color: var(--vscode-foreground);
+  margin-bottom: 8px;
+}
+
+.welcome-content p {
+  color: var(--vscode-descriptionForeground);
+  margin-bottom: 20px;
+}
+
+.create-file-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.create-file-btn:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--vscode-editorGroupHeader-tabsBackground, #2d2d30);
+  border-bottom: 1px solid var(--vscode-editorGroupHeader-tabsBorder, #3e3e42);
+  min-height: 35px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.tabs::-webkit-scrollbar {
+  height: 3px;
+}
+
+.tabs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+  background: var(--vscode-scrollbarSlider-background);
+  border-radius: 3px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: var(--vscode-tab-inactiveBackground, #2d2d30);
+  color: var(--vscode-tab-inactiveForeground, #969696);
+  border-right: 1px solid var(--vscode-tab-border, #3e3e42);
+  cursor: pointer;
+  user-select: none;
+  min-width: 120px;
+  max-width: 200px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.tab.active {
+  background-color: var(--vscode-tab-activeBackground, #1e1e1e);
+  color: var(--vscode-tab-activeForeground, #ffffff);
+  border-bottom: 2px solid var(--vscode-tab-activeBorder, #007acc);
+}
+
+.tab:hover:not(.active) {
+  background-color: var(--vscode-tab-hoverBackground, #323233);
+  color: var(--vscode-tab-hoverForeground, #ffffff);
+}
+
+.tab-indicator {
+  flex-shrink: 0;
+}
+
+.tab-indicator.dirty {
+  color: var(--vscode-inputValidation-warningForeground, #ffcc02);
+  fill: currentColor;
+}
+
+.tab-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+.tab-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.tab-close:hover {
+  opacity: 1;
+  background-color: var(--vscode-toolbar-hoverBackground, rgba(255, 255, 255, 0.1));
+}
+
+.tab-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  flex-shrink: 0;
+  height: 35px;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  color: var(--vscode-foreground);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+.action-btn:hover {
+  background-color: var(--vscode-toolbar-hoverBackground, rgba(255, 255, 255, 0.1));
+}
+
+.action-btn.executing {
+  color: var(--vscode-inputValidation-errorForeground, #f48771);
+  animation: pulse 1s infinite;
+}
+
+.action-btn.error-indicator {
+  color: var(--vscode-errorForeground, #f85149);
+  position: relative;
+  gap: 4px;
+  padding: 4px 8px;
+  min-width: auto;
+}
+
+.action-btn.error-indicator.active {
+  background-color: var(--vscode-button-background);
+}
+
+.action-btn.error-indicator .error-count {
+  font-size: 10px;
+  background-color: var(--vscode-errorForeground, #f85149);
+  color: white;
+  border-radius: 8px;
+  padding: 1px 4px;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.editor-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+/* Debug breakpoint styles */
+.breakpoint-enabled {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="%23e51400"/></svg>') center center no-repeat;
+  background-size: 12px 12px;
+  cursor: pointer;
+}
+
+.breakpoint-disabled {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="%23848484" stroke="%23e51400" stroke-width="2"/></svg>') center center no-repeat;
+  background-size: 12px 12px;
+  cursor: pointer;
+}
+
+.breakpoint-conditional {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="%23ffa500"/><text x="8" y="11" text-anchor="middle" fill="white" font-size="8">?</text></svg>') center center no-repeat;
+  background-size: 12px 12px;
+  cursor: pointer;
+}
+
+.current-execution-line {
+  background-color: var(--vscode-editor-stackFrameHighlightBackground, rgba(255, 255, 0, 0.2));
+  border-left: 3px solid var(--vscode-debugTokenExpression-number, #b5cea8);
+}
+
+.current-execution-arrow {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polygon points="1,8 8,1 8,5 15,5 15,11 8,11 8,15" fill="%23ffff00" stroke="%23000000" stroke-width="0.5"/></svg>') center center no-repeat;
+  background-size: 14px 14px;
+}
+
+/* Hover effects for gutter */
+.monaco-editor .margin:hover .cgmr {
+  background-color: var(--vscode-editorGutter-background, rgba(255, 255, 255, 0.1));
+  border-radius: 2px;
+}
+
+/* Line highlight for debugging */
+.monaco-editor .current-line-debug {
+  background-color: var(--vscode-editor-lineHighlightBackground, rgba(255, 255, 255, 0.1));
+}
+
+/* Gutter margin styling */
+.monaco-editor .cgmr {
+  width: 16px !important;
+}
+
+/* Debug line decorations */
+.monaco-editor .debug-line-decoration {
+  position: relative;
+}
+
+.monaco-editor .debug-line-decoration::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: var(--vscode-debugTokenExpression-number, #b5cea8);
+}

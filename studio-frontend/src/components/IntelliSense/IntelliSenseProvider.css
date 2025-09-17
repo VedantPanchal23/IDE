@@ -1,0 +1,176 @@
+/* IntelliSense Provider Styles */
+
+/* Monaco Editor IntelliSense Customizations */
+.monaco-editor .suggest-widget {
+  background: var(--vscode-editorSuggestWidget-background) !important;
+  border: 1px solid var(--vscode-editorSuggestWidget-border) !important;
+  color: var(--vscode-editorSuggestWidget-foreground) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row {
+  background: transparent !important;
+  color: var(--vscode-editorSuggestWidget-foreground) !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row:hover {
+  background: var(--vscode-editorSuggestWidget-highlightForeground) !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row.focused {
+  background: var(--vscode-editorSuggestWidget-selectedBackground) !important;
+  color: var(--vscode-editorSuggestWidget-selectedForeground) !important;
+}
+
+.monaco-editor .suggest-widget .suggest-status-bar {
+  background: var(--vscode-editorSuggestWidget-background) !important;
+  border-top: 1px solid var(--vscode-editorSuggestWidget-border) !important;
+  color: var(--vscode-editorSuggestWidget-foreground) !important;
+}
+
+/* Hover widget styling */
+.monaco-editor .monaco-hover {
+  background: var(--vscode-editorHoverWidget-background) !important;
+  border: 1px solid var(--vscode-editorHoverWidget-border) !important;
+  color: var(--vscode-editorHoverWidget-foreground) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+.monaco-editor .monaco-hover .hover-contents {
+  background: transparent !important;
+  color: var(--vscode-editorHoverWidget-foreground) !important;
+}
+
+.monaco-editor .monaco-hover .hover-contents code {
+  background: var(--vscode-textCodeBlock-background) !important;
+  color: var(--vscode-textPreformat-foreground) !important;
+}
+
+/* Error squiggles */
+.monaco-editor .squiggly-error {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%23E51400' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left !important;
+}
+
+.monaco-editor .squiggly-warning {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%23FF8C00' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left !important;
+}
+
+.monaco-editor .squiggly-info {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%23007ACC' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left !important;
+}
+
+/* Parameter hints */
+.monaco-editor .parameter-hints-widget {
+  background: var(--vscode-editorHoverWidget-background) !important;
+  border: 1px solid var(--vscode-editorHoverWidget-border) !important;
+  color: var(--vscode-editorHoverWidget-foreground) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+.monaco-editor .parameter-hints-widget .signature {
+  color: var(--vscode-editorHoverWidget-foreground) !important;
+}
+
+.monaco-editor .parameter-hints-widget .parameter.active {
+  font-weight: bold !important;
+  color: var(--vscode-editorHoverWidget-foreground) !important;
+}
+
+/* Quick fix lightbulb */
+.monaco-editor .lightbulb-glyph {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M8 1C5.24 1 3 3.24 3 6c0 1.25.46 2.4 1.21 3.29.14.16.27.33.38.51.54.89.87 1.93.87 3.04 0 .11.09.2.2.2h4.68c.11 0 .2-.09.2-.2 0-1.11.33-2.15.87-3.04.11-.18.24-.35.38-.51C12.54 8.4 13 7.25 13 6c0-2.76-2.24-5-5-5z' fill='%23FFCC02'/%3e%3c/svg%3e") no-repeat center center !important;
+  background-size: 16px 16px !important;
+}
+
+/* Context menu styling */
+.monaco-menu {
+  background: var(--vscode-menu-background) !important;
+  border: 1px solid var(--vscode-menu-border) !important;
+  color: var(--vscode-menu-foreground) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+.monaco-menu .monaco-action-bar .action-item .action-label {
+  color: var(--vscode-menu-foreground) !important;
+}
+
+.monaco-menu .monaco-action-bar .action-item .action-label:hover {
+  background: var(--vscode-menu-selectionBackground) !important;
+  color: var(--vscode-menu-selectionForeground) !important;
+}
+
+/* Completion item icons */
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon {
+  background-size: 16px 16px !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon.function {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M2 8h12M8 2v12' stroke='%23B180D7' stroke-width='2' stroke-linecap='round'/%3e%3c/svg%3e") no-repeat center center !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon.variable {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='6' stroke='%2375BEFF' stroke-width='2'/%3e%3c/svg%3e") no-repeat center center !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon.class {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='2' y='2' width='12' height='12' stroke='%23EE9D28' stroke-width='2'/%3e%3c/svg%3e") no-repeat center center !important;
+}
+
+.monaco-editor .suggest-widget .monaco-list .monaco-list-row .suggest-icon.snippet {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M4 4h8v8H4z' stroke='%23F44747' stroke-width='2'/%3e%3c/svg%3e") no-repeat center center !important;
+}
+
+/* Symbol search results */
+.symbol-search-results {
+  background: var(--vscode-quickInput-background);
+  border: 1px solid var(--vscode-quickInput-border);
+  color: var(--vscode-quickInput-foreground);
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.symbol-search-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--vscode-quickInput-border);
+}
+
+.symbol-search-item:hover {
+  background: var(--vscode-quickInput-list-hoverBackground);
+}
+
+.symbol-search-item:last-child {
+  border-bottom: none;
+}
+
+.symbol-search-icon {
+  margin-right: 8px;
+  color: var(--vscode-symbolIcon-functionForeground);
+}
+
+.symbol-search-name {
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.symbol-search-detail {
+  color: var(--vscode-descriptionForeground);
+  font-size: 11px;
+}
+
+/* Go to definition peek */
+.monaco-editor .reference-decoration {
+  background: rgba(0, 122, 204, 0.2) !important;
+  border: 1px solid rgba(0, 122, 204, 0.8) !important;
+}
+
+.monaco-editor .findMatch {
+  background: rgba(234, 92, 0, 0.33) !important;
+}
+
+.monaco-editor .currentFindMatch {
+  background: rgba(234, 92, 0, 0.66) !important;
+}

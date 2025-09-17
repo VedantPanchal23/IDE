@@ -1,0 +1,145 @@
+.command-palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10vh;
+  z-index: 1000;
+}
+
+.command-palette {
+  background-color: var(--vscode-quickInput-background);
+  border: 1px solid var(--vscode-quickInput-border);
+  border-radius: 4px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.command-input-container {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--vscode-quickInput-border);
+  background-color: var(--vscode-quickInput-background);
+}
+
+.search-icon {
+  color: var(--vscode-quickInput-foreground);
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.command-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--vscode-quickInput-foreground);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.command-input::placeholder {
+  color: var(--vscode-input-placeholderForeground);
+}
+
+.close-icon {
+  color: var(--vscode-quickInput-foreground);
+  cursor: pointer;
+  opacity: 0.7;
+  margin-left: 8px;
+}
+
+.close-icon:hover {
+  opacity: 1;
+}
+
+.command-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  max-height: 400px;
+}
+
+.command-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+}
+
+.command-item:hover,
+.command-item.selected {
+  background-color: var(--vscode-quickInputList-focusBackground);
+  color: var(--vscode-quickInputList-focusForeground);
+}
+
+.command-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.command-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.command-subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.command-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.recent-icon {
+  opacity: 0.6;
+}
+
+.keybinding {
+  font-size: 11px;
+  padding: 2px 6px;
+  background-color: var(--vscode-keybindingLabel-background);
+  color: var(--vscode-keybindingLabel-foreground);
+  border: 1px solid var(--vscode-keybindingLabel-border);
+  border-radius: 2px;
+  font-family: monospace;
+}
+
+.no-commands {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--vscode-descriptionForeground);
+  font-style: italic;
+}
+
+.command-palette-footer {
+  padding: 8px 16px;
+  border-top: 1px solid var(--vscode-quickInput-border);
+  background-color: var(--vscode-quickInput-background);
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  text-align: center;
+}

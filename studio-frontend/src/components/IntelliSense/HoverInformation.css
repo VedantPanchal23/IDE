@@ -1,0 +1,416 @@
+/* HoverInformation.css */
+
+/* Monaco editor hover widget customization */
+.monaco-editor .monaco-hover {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 600px;
+  min-width: 300px;
+  padding: 0;
+  word-wrap: break-word;
+  z-index: 1000;
+}
+
+.monaco-editor .monaco-hover .hover-contents {
+  padding: 12px 16px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string {
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string h1,
+.monaco-editor .monaco-hover .hover-contents .markdown-string h2,
+.monaco-editor .monaco-hover .hover-contents .markdown-string h3 {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string h1 {
+  font-size: 16px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string h2 {
+  font-size: 14px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string h3 {
+  font-size: 13px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string p {
+  margin: 0 0 8px 0;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string p:last-child {
+  margin-bottom: 0;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string code {
+  background: var(--color-bg-tertiary);
+  border-radius: 3px;
+  color: var(--color-text-accent);
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  padding: 2px 4px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string pre {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 4px;
+  margin: 8px 0;
+  overflow-x: auto;
+  padding: 8px 12px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string pre code {
+  background: none;
+  color: var(--color-text-primary);
+  font-size: 12px;
+  padding: 0;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string a:hover {
+  text-decoration: underline;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string ul,
+.monaco-editor .monaco-hover .hover-contents .markdown-string ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.monaco-editor .monaco-hover .hover-contents .markdown-string li {
+  margin: 4px 0;
+}
+
+/* Hover widget header */
+.monaco-editor .monaco-hover .hover-header {
+  align-items: center;
+  background: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  padding: 8px 16px;
+}
+
+.monaco-editor .monaco-hover .hover-icon {
+  flex-shrink: 0;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.monaco-editor .monaco-hover .hover-icon.function {
+  color: var(--color-primary);
+}
+
+.monaco-editor .monaco-hover .hover-icon.variable {
+  color: var(--color-success);
+}
+
+.monaco-editor .monaco-hover .hover-icon.class {
+  color: var(--color-warning);
+}
+
+.monaco-editor .monaco-hover .hover-icon.method {
+  color: var(--color-info);
+}
+
+.monaco-editor .monaco-hover .hover-icon.property {
+  color: var(--color-text-secondary);
+}
+
+.monaco-editor .monaco-hover .hover-title {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  flex: 1;
+}
+
+.monaco-editor .monaco-hover .hover-type {
+  background: var(--color-bg-hover);
+  border-radius: 3px;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  text-transform: uppercase;
+}
+
+/* Hover content sections */
+.monaco-editor .monaco-hover .hover-section {
+  margin-bottom: 12px;
+}
+
+.monaco-editor .monaco-hover .hover-section:last-child {
+  margin-bottom: 0;
+}
+
+.monaco-editor .monaco-hover .hover-section-title {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.monaco-editor .monaco-hover .hover-section-content {
+  color: var(--color-text-primary);
+}
+
+/* Syntax highlighting in hover code blocks */
+.monaco-editor .monaco-hover .language-javascript .token.keyword {
+  color: #569cd6;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.string {
+  color: #ce9178;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.number {
+  color: #b5cea8;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.function {
+  color: #dcdcaa;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.comment {
+  color: #6a9955;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.operator {
+  color: #d4d4d4;
+}
+
+.monaco-editor .monaco-hover .language-javascript .token.punctuation {
+  color: #d4d4d4;
+}
+
+/* Documentation links */
+.monaco-editor .monaco-hover .hover-links {
+  border-top: 1px solid var(--color-border);
+  margin-top: 12px;
+  padding-top: 8px;
+}
+
+.monaco-editor .monaco-hover .hover-link {
+  align-items: center;
+  color: var(--color-primary);
+  display: flex;
+  font-size: 12px;
+  margin: 4px 0;
+  text-decoration: none;
+}
+
+.monaco-editor .monaco-hover .hover-link:hover {
+  text-decoration: underline;
+}
+
+.monaco-editor .monaco-hover .hover-link-icon {
+  margin-right: 6px;
+  width: 14px;
+  height: 14px;
+}
+
+/* Parameter information */
+.monaco-editor .monaco-hover .parameter-info {
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+  margin: 8px 0;
+  padding: 8px 12px;
+}
+
+.monaco-editor .monaco-hover .parameter-name {
+  color: var(--color-text-accent);
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+}
+
+.monaco-editor .monaco-hover .parameter-type {
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+}
+
+.monaco-editor .monaco-hover .parameter-description {
+  color: var(--color-text-primary);
+  margin-top: 4px;
+}
+
+/* Examples section */
+.monaco-editor .monaco-hover .examples-section {
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+  margin: 8px 0;
+  padding: 8px 12px;
+}
+
+.monaco-editor .monaco-hover .example-title {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.monaco-editor .monaco-hover .example-code {
+  background: var(--color-bg-primary);
+  border-radius: 3px;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 6px 8px;
+  white-space: pre-wrap;
+}
+
+/* Methods and properties list */
+.monaco-editor .monaco-hover .methods-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.monaco-editor .monaco-hover .method-tag {
+  background: var(--color-bg-hover);
+  border-radius: 3px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  padding: 2px 6px;
+}
+
+/* Location information for local definitions */
+.monaco-editor .monaco-hover .location-info {
+  align-items: center;
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  display: flex;
+  font-size: 11px;
+  margin: 8px 0;
+  padding: 6px 8px;
+}
+
+.monaco-editor .monaco-hover .location-icon {
+  margin-right: 6px;
+  width: 12px;
+  height: 12px;
+}
+
+/* Quick actions in hover */
+.monaco-editor .monaco-hover .hover-actions {
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 8px;
+}
+
+.monaco-editor .monaco-hover .hover-action {
+  align-items: center;
+  background: var(--color-bg-hover);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  font-size: 11px;
+  padding: 4px 8px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.monaco-editor .monaco-hover .hover-action:hover {
+  background: var(--color-bg-active);
+  color: var(--color-text-primary);
+}
+
+.monaco-editor .monaco-hover .hover-action-icon {
+  margin-right: 4px;
+  width: 12px;
+  height: 12px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .monaco-editor .monaco-hover {
+    max-width: 90vw;
+    min-width: 250px;
+  }
+  
+  .monaco-editor .monaco-hover .hover-contents {
+    padding: 10px 12px;
+  }
+  
+  .monaco-editor .monaco-hover .hover-contents .markdown-string {
+    font-size: 12px;
+  }
+  
+  .monaco-editor .monaco-hover .methods-list {
+    gap: 2px;
+  }
+  
+  .monaco-editor .monaco-hover .method-tag {
+    font-size: 10px;
+  }
+}
+
+/* Dark theme specific adjustments */
+@media (prefers-color-scheme: dark) {
+  .monaco-editor .monaco-hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  .monaco-editor .monaco-hover .language-javascript .token.keyword {
+    color: #569cd6;
+  }
+  
+  .monaco-editor .monaco-hover .language-javascript .token.string {
+    color: #ce9178;
+  }
+  
+  .monaco-editor .monaco-hover .language-javascript .token.number {
+    color: #b5cea8;
+  }
+  
+  .monaco-editor .monaco-hover .language-javascript .token.function {
+    color: #dcdcaa;
+  }
+}
+
+/* Animation for hover appearance */
+@keyframes hoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.monaco-editor .monaco-hover {
+  animation: hoverFadeIn 0.2s ease-out;
+}

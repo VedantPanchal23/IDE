@@ -1,0 +1,132 @@
+.explorer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--vscode-sideBar-background);
+  color: var(--vscode-foreground);
+  font-size: 13px;
+}
+
+.explorer-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--vscode-sideBarTitle-foreground);
+  letter-spacing: 0.5px;
+}
+
+.search-container {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border);
+  border-radius: 2px;
+  padding: 4px 8px;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--vscode-focusBorder);
+}
+
+.search-icon {
+  color: var(--vscode-input-placeholderForeground);
+  margin-right: 6px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--vscode-input-foreground);
+  font-size: 13px;
+}
+
+.search-input::placeholder {
+  color: var(--vscode-input-placeholderForeground);
+}
+
+.clear-search {
+  color: var(--vscode-input-placeholderForeground);
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.clear-search:hover {
+  color: var(--vscode-foreground);
+}
+
+.file-tree {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.file-item-container {
+  user-select: none;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  cursor: pointer;
+  min-height: 22px;
+  position: relative;
+}
+
+.file-item:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.file-item.active {
+  background-color: var(--vscode-list-activeSelectionBackground);
+  color: var(--vscode-list-activeSelectionForeground);
+}
+
+.file-item-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.folder-toggle {
+  display: flex;
+  align-items: center;
+  margin-right: 2px;
+  color: var(--vscode-tree-indentGuidesStroke);
+}
+
+.file-icon {
+  display: flex;
+  align-items: center;
+  margin-right: 6px;
+  color: var(--vscode-symbolIcon-fileForeground);
+}
+
+.file-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-contents {
+  border-left: 1px solid var(--vscode-tree-indentGuidesStroke);
+  margin-left: 8px;
+}
+
+.no-files {
+  padding: 16px 12px;
+  color: var(--vscode-descriptionForeground);
+  font-style: italic;
+  text-align: center;
+}

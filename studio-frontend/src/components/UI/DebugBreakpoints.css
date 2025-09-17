@@ -1,0 +1,243 @@
+.debug-breakpoints {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--vscode-font-family);
+  font-size: 13px;
+  background: var(--vscode-sideBar-background);
+  color: var(--vscode-sideBar-foreground);
+}
+
+.breakpoints-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+  background: var(--vscode-sideBarSectionHeader-background);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--vscode-sideBarTitle-foreground);
+}
+
+.header-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.breakpoints-action {
+  background: none;
+  border: none;
+  color: var(--vscode-icon-foreground);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s ease;
+}
+
+.breakpoints-action:hover:not(:disabled) {
+  background: var(--vscode-toolbar-hoverBackground);
+}
+
+.breakpoints-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.breakpoints-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.breakpoints-list {
+  min-height: 100%;
+}
+
+.breakpoints-file-group {
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+}
+
+.file-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: var(--vscode-sideBarSectionHeader-background);
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+  user-select: none;
+}
+
+.file-header:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.file-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  color: var(--vscode-tree-indentGuidesStroke);
+}
+
+.file-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--vscode-sideBarTitle-foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-count {
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+}
+
+.file-breakpoints {
+  background: var(--vscode-sideBar-background);
+}
+
+.breakpoint-item {
+  border-bottom: 1px solid var(--vscode-sideBar-border);
+  transition: opacity 0.1s ease;
+}
+
+.breakpoint-item.disabled {
+  opacity: 0.6;
+}
+
+.breakpoint-main {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px 8px 28px;
+  gap: 8px;
+}
+
+.breakpoint-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.breakpoint-icon {
+  transition: color 0.1s ease;
+}
+
+.breakpoint-icon.enabled {
+  color: #f85149;
+  fill: #f85149;
+}
+
+.breakpoint-icon.disabled {
+  color: #6e6e6e;
+  fill: none;
+  stroke: #6e6e6e;
+}
+
+.breakpoint-icon.conditional {
+  color: #ffab70;
+  fill: #ffab70;
+}
+
+.breakpoint-info {
+  flex: 1;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.breakpoint-info:hover .breakpoint-location {
+  text-decoration: underline;
+}
+
+.breakpoint-location {
+  font-weight: 500;
+  color: var(--vscode-debugTokenExpression-name);
+  margin-bottom: 2px;
+}
+
+.breakpoint-preview {
+  font-family: var(--vscode-editor-font-family);
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground);
+  background: var(--vscode-textCodeBlock-background);
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.breakpoint-condition {
+  font-size: 11px;
+  color: var(--vscode-debugTokenExpression-string);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.breakpoint-remove {
+  background: none;
+  border: none;
+  color: var(--vscode-icon-foreground);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  margin-top: 2px;
+}
+
+.breakpoint-item:hover .breakpoint-remove {
+  opacity: 0.6;
+}
+
+.breakpoint-remove:hover {
+  opacity: 1;
+  background: var(--vscode-toolbar-hoverBackground);
+}
+
+.breakpoints-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  padding: 20px;
+  color: var(--vscode-descriptionForeground);
+  text-align: center;
+}
+
+.breakpoints-empty p {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+}
+
+.breakpoints-empty small {
+  font-size: 11px;
+  opacity: 0.7;
+}

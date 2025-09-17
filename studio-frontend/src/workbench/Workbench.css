@@ -1,0 +1,92 @@
+.workbench {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: #1e1e1e;
+  color: #cccccc;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+}
+
+.workbench-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.main-panels {
+  flex: 1;
+  min-width: 0;
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: #1e1e1e;
+}
+
+.resize-handle {
+  background: #3e3e42;
+  transition: background-color 0.2s ease;
+}
+
+.resize-handle:hover {
+  background: #007acc;
+}
+
+.resize-handle[data-resize-handle-state="hover"] {
+  background: #007acc;
+}
+
+.resize-handle[data-resize-handle-state="drag"] {
+  background: #007acc;
+}
+
+/* Professional VS Code styling */
+.workbench * {
+  box-sizing: border-box;
+}
+
+.workbench-body > * {
+  will-change: transform;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .workbench-body {
+    flex-direction: column;
+  }
+  
+  .main-panels {
+    flex-direction: column;
+  }
+}
+
+/* Focus management */
+.workbench:focus-within {
+  outline: none;
+}
+
+/* Smooth transitions */
+.workbench * {
+  transition: background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .resize-handle {
+    border: 1px solid;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .workbench * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

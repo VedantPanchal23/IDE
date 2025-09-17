@@ -1,0 +1,152 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  background: var(--vscode-breadcrumb-background);
+  border-bottom: 1px solid var(--vscode-breadcrumb-border);
+  font-family: var(--vscode-font-family);
+  font-size: 12px;
+  min-height: 28px;
+  overflow: hidden;
+}
+
+.breadcrumb-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.breadcrumb-segment {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--vscode-breadcrumb-foreground);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: inherit;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumb-segment:hover {
+  background: var(--vscode-breadcrumb-focusBackground);
+  color: var(--vscode-breadcrumb-activeForeground);
+}
+
+.breadcrumb-segment.home {
+  color: var(--vscode-breadcrumb-foreground);
+}
+
+.breadcrumb-segment.directory {
+  color: var(--vscode-breadcrumb-foreground);
+}
+
+.breadcrumb-segment.file {
+  color: var(--vscode-breadcrumb-activeForeground);
+  cursor: default;
+  font-weight: 500;
+}
+
+.breadcrumb-segment.file:hover {
+  background: none;
+}
+
+.breadcrumb-segment.active {
+  color: var(--vscode-breadcrumb-activeForeground);
+}
+
+.breadcrumb-separator {
+  color: var(--vscode-breadcrumb-foreground);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.file-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumb-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+.breadcrumb-action {
+  background: none;
+  border: none;
+  color: var(--vscode-icon-foreground);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: all 0.1s ease;
+}
+
+.breadcrumb-action:hover {
+  background: var(--vscode-toolbar-hoverBackground);
+  opacity: 1;
+}
+
+/* Responsive behavior for narrow widths */
+@media (max-width: 600px) {
+  .breadcrumb-segment {
+    max-width: 100px;
+  }
+  
+  .breadcrumb-segment.directory:not(:last-of-type) {
+    max-width: 60px;
+  }
+}
+
+/* VS Code color variables for breadcrumb */
+:root {
+  --vscode-breadcrumb-background: #2d2d30;
+  --vscode-breadcrumb-foreground: #cccccc;
+  --vscode-breadcrumb-focusBackground: #2a2d2e;
+  --vscode-breadcrumb-activeForeground: #ffffff;
+  --vscode-breadcrumb-border: #2f2f2f;
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vscode-breadcrumb-background: #2d2d30;
+    --vscode-breadcrumb-foreground: #cccccc;
+    --vscode-breadcrumb-focusBackground: #2a2d2e;
+    --vscode-breadcrumb-activeForeground: #ffffff;
+    --vscode-breadcrumb-border: #2f2f2f;
+  }
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  :root {
+    --vscode-breadcrumb-background: #f3f3f3;
+    --vscode-breadcrumb-foreground: #616161;
+    --vscode-breadcrumb-focusBackground: #e8e8e8;
+    --vscode-breadcrumb-activeForeground: #333333;
+    --vscode-breadcrumb-border: #e5e5e5;
+  }
+}

@@ -1,0 +1,315 @@
+/* ErrorSquiggles.css */
+
+/* Monaco editor marker overrides */
+.monaco-editor .squiggly-error {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%23f85149' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left;
+}
+
+.monaco-editor .squiggly-warning {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%23ff8c00' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left;
+}
+
+.monaco-editor .squiggly-info {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%2358a6ff' fill='none' stroke-width='1'/%3e%3c/svg%3e") repeat-x bottom left;
+}
+
+.monaco-editor .squiggly-hint {
+  background: url("data:image/svg+xml,%3csvg width='6' height='3' viewBox='0 0 6 3' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 3 l2 -2 l1 0 l2 2 l1 0' stroke='%236CB6FF' fill='none' stroke-width='1' stroke-dasharray='2,3'/%3e%3c/svg%3e") repeat-x bottom left;
+}
+
+/* Error lightbulb and quick fix styles */
+.monaco-editor .lightbulb-glyph {
+  background: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23ffcc02' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M9.5 2c1.92 0 3.5 1.58 3.5 3.5 0 1.45-.89 2.68-2.14 3.19-.04.48-.1.94-.18 1.37-.06.29-.14.57-.23.82-.05.14-.1.26-.15.37-.05.1-.1.18-.14.24-.04.06-.07.1-.1.13-.01.01-.02.02-.03.03L8.77 12.5l-.53.5-.54-.5-1.11-1.12c-.01-.01-.01-.02-.03-.03-.02-.03-.05-.07-.09-.13-.04-.06-.09-.14-.14-.24-.05-.11-.1-.23-.15-.37-.09-.25-.17-.53-.23-.82-.08-.43-.14-.89-.18-1.37C4.89 8.18 4 6.95 4 5.5 4 3.58 5.58 2 7.5 2H8l.75 0H9.5zm-2 2.5c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zm2 0c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5zM8 13c-.28 0-.5-.22-.5-.5s.22-.5.5-.5.5.22.5.5-.22.5-.5.5z'/%3e%3c/svg%3e") no-repeat;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  margin-left: 2px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.monaco-editor .lightbulb-glyph:hover {
+  opacity: 1;
+}
+
+/* Hover widget styling for error messages */
+.monaco-editor .monaco-hover {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 500px;
+  padding: 8px 12px;
+  word-wrap: break-word;
+}
+
+.monaco-editor .monaco-hover .hover-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.monaco-editor .monaco-hover .hover-row:last-child {
+  margin-bottom: 0;
+}
+
+.monaco-editor .monaco-hover .hover-icon {
+  flex-shrink: 0;
+  margin-right: 8px;
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+}
+
+.monaco-editor .monaco-hover .hover-icon.error {
+  color: var(--color-error);
+}
+
+.monaco-editor .monaco-hover .hover-icon.warning {
+  color: var(--color-warning);
+}
+
+.monaco-editor .monaco-hover .hover-icon.info {
+  color: var(--color-info);
+}
+
+.monaco-editor .monaco-hover .hover-contents {
+  flex: 1;
+}
+
+.monaco-editor .monaco-hover .hover-message {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.monaco-editor .monaco-hover .hover-code {
+  background: var(--color-bg-tertiary);
+  border-radius: 2px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  margin-top: 4px;
+  padding: 2px 4px;
+}
+
+/* Error list widget (for problems panel integration) */
+.error-list-widget {
+  background: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.error-list-item {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  display: flex;
+  padding: 6px 12px;
+  transition: background-color 0.15s ease;
+}
+
+.error-list-item:hover {
+  background: var(--color-bg-hover);
+}
+
+.error-list-item:last-child {
+  border-bottom: none;
+}
+
+.error-list-icon {
+  flex-shrink: 0;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.error-list-icon.error {
+  color: var(--color-error);
+}
+
+.error-list-icon.warning {
+  color: var(--color-warning);
+}
+
+.error-list-icon.info {
+  color: var(--color-info);
+}
+
+.error-list-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-list-message {
+  color: var(--color-text-primary);
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.error-list-location {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  margin: 0;
+}
+
+.error-list-code {
+  background: var(--color-bg-tertiary);
+  border-radius: 2px;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  margin-left: 8px;
+  padding: 1px 3px;
+}
+
+/* Analysis indicator */
+.analysis-indicator {
+  align-items: center;
+  background: var(--color-bg-secondary);
+  border-radius: 3px;
+  color: var(--color-text-secondary);
+  display: flex;
+  font-size: 11px;
+  padding: 2px 6px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 1000;
+}
+
+.analysis-indicator.analyzing {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.analysis-indicator-icon {
+  margin-right: 4px;
+  width: 12px;
+  height: 12px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Quick fix menu */
+.quick-fix-menu {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  max-height: 300px;
+  min-width: 200px;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 1000;
+}
+
+.quick-fix-item {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  padding: 8px 12px;
+  transition: background-color 0.15s ease;
+}
+
+.quick-fix-item:hover,
+.quick-fix-item.focused {
+  background: var(--color-bg-hover);
+}
+
+.quick-fix-icon {
+  flex-shrink: 0;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.quick-fix-title {
+  color: var(--color-text-primary);
+  flex: 1;
+  font-weight: 500;
+}
+
+.quick-fix-description {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.quick-fix-separator {
+  border-top: 1px solid var(--color-border);
+  margin: 4px 0;
+}
+
+/* Error tooltip for inline display */
+.error-tooltip {
+  background: rgba(248, 81, 73, 0.95);
+  border-radius: 3px;
+  color: white;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  max-width: 300px;
+  padding: 4px 8px;
+  position: absolute;
+  word-wrap: break-word;
+  z-index: 1000;
+}
+
+.error-tooltip::before {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid rgba(248, 81, 73, 0.95);
+  bottom: -4px;
+  content: '';
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.warning-tooltip {
+  background: rgba(255, 140, 0, 0.95);
+}
+
+.warning-tooltip::before {
+  border-top-color: rgba(255, 140, 0, 0.95);
+}
+
+.info-tooltip {
+  background: rgba(88, 166, 255, 0.95);
+}
+
+.info-tooltip::before {
+  border-top-color: rgba(88, 166, 255, 0.95);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .monaco-editor .monaco-hover {
+    max-width: 280px;
+    font-size: 12px;
+  }
+  
+  .error-list-widget {
+    max-height: 150px;
+  }
+  
+  .quick-fix-menu {
+    min-width: 180px;
+    font-size: 12px;
+  }
+}
