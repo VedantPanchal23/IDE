@@ -940,7 +940,7 @@ const Workbench = () => {
             driveApi.listFiles(path).then(children => {
               const formattedChildren = children.map(child => ({
                 ...child,
-                path: `${path}/${child.name}`,
+                path: `${path === '/' ? '' : path}/${child.name}`,
                 children: child.type === 'folder' ? [] : undefined,
               }));
               node.children = formattedChildren;
@@ -1253,34 +1253,73 @@ const Workbench = () => {
     }
   }, [debugWatchExpressions, debugBreakpoints, isDebugging, isPaused])
 
+  const refreshNodeInTree = useCallback(async (folderPath) => {
+    const findAndPopulate = (nodes, path) => {
+      for (const node of nodes) {
+        if (node.path === path && node.type === 'folder') {
+          driveApi.listFiles(path).then(children => {
+            const formattedChildren = children.map(child => ({
+              ...child,
+              path: `${path === '/' ? '' : path}/${child.name}`,
+              children: child.type === 'folder' ? [] : undefined,
+            }));
+            node.children = formattedChildren;
+            setFileTree(prevTree => [...prevTree]); // Trigger re-render
+          });
+          return true;
+        }
+        if (node.children && findAndPopulate(node.children, path)) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    setFileTree(prevTree => {
+      const newTree = [...prevTree];
+      findAndPopulate(newTree, folderPath);
+      return newTree;
+    });
+  }, []);
+
   // File operation handler for advanced file management
   const handleFileOperation = useCallback(async (operation, params) => {
     try {
-      const currentFile = openTabs.find(tab => tab.id === activeTabId);
-      const parentPath = currentFile ? path.dirname(currentFile.path) : '/';
+      // Use the path from params if available (e.g., from context menu), otherwise default
+      const activeFile = openTabs.find(tab => tab.id === activeTabId);
+      const baseDir = params?.path ? (params.type === 'folder' ? params.path : path.dirname(params.path)) : (activeFile ? path.dirname(activeFile.path) : '/');
 
       switch (operation) {
         case 'newFile': {
           const fileName = prompt('Enter new file name:');
           if (fileName) {
-            const newFilePath = `${parentPath === '/' ? '' : parentPath}/${fileName}`;
+            const newFilePath = `${baseDir === '/' ? '' : baseDir}/${fileName}`;
             await driveApi.saveFile(newFilePath, '');
-            loadWorkspaceFromDrive(); // Refresh tree
+            await refreshNodeInTree(baseDir); // Refresh the parent directory
+            // Automatically expand the parent folder if it's not already
+            if (!expandedFolders.has(baseDir)) {
+                setExpandedFolders(prev => new Set(prev).add(baseDir));
+            }
           }
           break;
         }
         case 'newFolder': {
           const folderName = prompt('Enter new folder name:');
           if (folderName) {
-            const newFolderPath = `${parentPath === '/' ? '' : parentPath}/${folderName}`;
+            const newFolderPath = `${baseDir === '/' ? '' : baseDir}/${folderName}`;
             await driveApi.createFolder(newFolderPath);
-            loadWorkspaceFromDrive(); // Refresh tree
+            await refreshNodeInTree(baseDir); // Refresh the parent directory
+            // Automatically expand the parent folder if it's not already
+            if (!expandedFolders.has(baseDir)) {
+                setExpandedFolders(prev => new Set(prev).add(baseDir));
+            }
           }
           break;
         }
         case 'refresh': {
-          loadWorkspaceFromDrive();
-          notificationServiceRef.current?.info('File explorer refreshed');
+          const refreshPath = params?.path || '/';
+          await refreshNodeInTree(refreshPath);
+          notificationServiceRef.current?.info(`Refreshed '${refreshPath}'`);
           break;
         }
         default:
@@ -1290,7 +1329,7 @@ const Workbench = () => {
       console.error('File operation failed:', error);
       notificationServiceRef.current?.error(`File operation failed: ${error.message}`);
     }
-  }, [activeTabId, openTabs]);
+  }, [activeTabId, openTabs, expandedFolders, refreshNodeInTree]);
 
   const cleanup = () => {
     // Cleanup services and listeners

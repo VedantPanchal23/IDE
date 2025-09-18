@@ -113,7 +113,7 @@ export const UserProvider = ({ children }) => {
   const loginWithGoogle = () => {
     // Redirect to the custom backend for Google OAuth flow
     // This backend will handle the token exchange and then redirect back to the frontend
-    const backendUrl = 'http://localhost:3001/api/auth/google';
+    const backendUrl = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`;
     window.location.href = backendUrl;
     // No need to return anything here, as the page will be redirected.
     // The App component will handle the user state based on the URL params after redirect.

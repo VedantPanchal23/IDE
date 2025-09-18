@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3001/api/drive';
+const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('google_access_token');
@@ -29,7 +29,7 @@ const handleResponse = async (response) => {
 };
 
 export const initDrive = async () => {
-  const response = await fetch(`${API_BASE_URL}/init`, {
+  const response = await fetch(`${API_BASE_URL}/drive/init`, {
     method: 'POST',
     headers: getAuthHeaders(),
   });
@@ -37,7 +37,7 @@ export const initDrive = async () => {
 };
 
 export const executeTerminalCommand = async (command) => {
-  const response = await fetch(`${API_BASE_URL}/../terminal/execute`, { // Note the relative path to get to /api/terminal
+  const response = await fetch(`${API_BASE_URL}/terminal/execute`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify({ command }),
@@ -46,7 +46,7 @@ export const executeTerminalCommand = async (command) => {
 };
 
 export const listFiles = async (path = '/') => {
-  const response = await fetch(`${API_BASE_URL}/list?path=${encodeURIComponent(path)}`, {
+  const response = await fetch(`${API_BASE_URL}/drive/list?path=${encodeURIComponent(path)}`, {
     method: 'GET',
     headers: getAuthHeaders(),
   });
@@ -55,7 +55,7 @@ export const listFiles = async (path = '/') => {
 };
 
 export const readFile = async (path) => {
-  const response = await fetch(`${API_BASE_URL}/file?path=${encodeURIComponent(path)}`, {
+  const response = await fetch(`${API_BASE_URL}/drive/file?path=${encodeURIComponent(path)}`, {
     method: 'GET',
     headers: getAuthHeaders(),
   });
@@ -68,7 +68,7 @@ export const readFile = async (path) => {
 };
 
 export const saveFile = async (path, content) => {
-  const response = await fetch(`${API_BASE_URL}/file`, {
+  const response = await fetch(`${API_BASE_URL}/drive/file`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify({ path, content }),
@@ -77,7 +77,7 @@ export const saveFile = async (path, content) => {
 };
 
 export const createFolder = async (path) => {
-  const response = await fetch(`${API_BASE_URL}/folder`, {
+  const response = await fetch(`${API_BASE_URL}/drive/folder`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify({ path }),
