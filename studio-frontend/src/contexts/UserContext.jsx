@@ -110,30 +110,13 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-  const loginWithGoogle = async () => {
-    try {
-      setLoading(true)
-      const result = await signInWithPopup(auth, googleProvider)
-      const user = result.user
-      
-      return { 
-        success: true, 
-        user: {
-          id: user.uid,
-          email: user.email,
-          name: user.displayName || user.email.split('@')[0],
-          photoURL: user.photoURL
-        }
-      }
-    } catch (error) {
-      console.error('Google login error:', error)
-      return { 
-        success: false, 
-        error: getFirebaseErrorMessage(error.code) 
-      }
-    } finally {
-      setLoading(false)
-    }
+  const loginWithGoogle = () => {
+    // Redirect to the custom backend for Google OAuth flow
+    // This backend will handle the token exchange and then redirect back to the frontend
+    const backendUrl = 'http://localhost:3001/api/auth/google';
+    window.location.href = backendUrl;
+    // No need to return anything here, as the page will be redirected.
+    // The App component will handle the user state based on the URL params after redirect.
   }
 
   const loginWithGithub = async () => {
@@ -195,6 +178,28 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  const loginWithToken = (userData, accessToken) => {
+    setLoading(true);
+    try {
+      // In a real app, you might want to verify the token with the backend
+      // For now, we trust the data from the callback
+      setUser({
+        id: userData.email, // Using email as a temporary ID
+        email: userData.email,
+        name: userData.name,
+        photoURL: userData.photoURL || null
+      });
+      // Store the token for future API calls
+      localStorage.setItem('google_access_token', accessToken);
+      setLoading(false);
+      return { success: true };
+    } catch (error) {
+      console.error("Error logging in with token:", error);
+      setLoading(false);
+      return { success: false, error: "Failed to process login." };
+    }
+  };
+
   return (
     <UserContext.Provider value={{
       user,
@@ -204,7 +209,8 @@ export const UserProvider = ({ children }) => {
       logout,
       loginWithGoogle,
       loginWithGithub,
-      checkAuth
+      checkAuth,
+      loginWithToken
     }}>
       {children}
     </UserContext.Provider>

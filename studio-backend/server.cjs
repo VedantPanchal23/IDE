@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
@@ -107,6 +108,137 @@ A web-based AI-powered IDE that replicates VS Code's UI/UX.
     lastModified: new Date().toISOString()
   }
 }
+
+const { google } = require('googleapis');
+
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+
+// Scopes required for Google Drive API access
+const scopes = [
+  'https://www.googleapis.com/auth/drive.file',
+  'https://www.googleapis.com/auth/userinfo.profile',
+  'https://www.googleapis.com/auth/userinfo.email'
+];
+
+// Generate a url that asks permissions for the Drive activity scope
+const authorizationUrl = oauth2Client.generateAuthUrl({
+  access_type: 'offline',
+  scope: scopes,
+  include_granted_scopes: true
+});
+
+// Route to start the Google authentication flow
+app.get('/api/auth/google', (req, res) => {
+  res.redirect(authorizationUrl);
+});
+
+// Route to handle the Google OAuth2 callback
+app.get('/api/auth/google/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+    if (!code) {
+      return res.status(400).send('Authorization code is missing');
+    }
+
+    const { tokens } = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
+
+    // TODO: Store tokens securely, associate them with a user session.
+    // For now, we'll just send them back to the client for demo purposes.
+    // This is NOT secure for a production environment.
+
+    // Fetch user profile information
+    const oauth2 = google.oauth2({
+      auth: oauth2Client,
+      version: 'v2'
+    });
+    const { data: userInfo } = await oauth2.userinfo.get();
+
+    // In a real app, you would create a user session here (e.g., using JWT)
+    // and redirect to the frontend with a session token.
+    const frontendUrl = 'http://localhost:5173';
+
+    // For now, redirecting with tokens in query params (INSECURE, FOR DEMO ONLY)
+    res.redirect(`${frontendUrl}?accessToken=${tokens.access_token}&refreshToken=${tokens.refresh_token}&email=${userInfo.email}&name=${userInfo.name}`);
+
+  } catch (error) {
+    console.error('Error during Google OAuth callback:', error);
+    res.status(500).send('Authentication failed');
+  }
+});
+
+
+// Middleware to extract access token
+const driveAuthMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Authorization header with Bearer token is required.' });
+  }
+  req.accessToken = authHeader.split(' ')[1];
+  next();
+};
+
+const DriveService = require('./services/DriveService');
+
+// Google Drive API Routes
+app.post('/api/drive/init', driveAuthMiddleware, async (req, res) => {
+  try {
+    const driveService = new DriveService(req.accessToken);
+    const folderId = await driveService.findOrCreateCodeSpaceFolder();
+    res.json({ success: true, codeSpaceFolderId: folderId });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/drive/list', driveAuthMiddleware, async (req, res) => {
+  try {
+    const { path } = req.query;
+    const driveService = new DriveService(req.accessToken);
+    const files = await driveService.listFiles(path);
+    res.json({ success: true, files });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.get('/api/drive/file', driveAuthMiddleware, async (req, res) => {
+  try {
+    const { path } = req.query;
+    const driveService = new DriveService(req.accessToken);
+    const content = await driveService.readFile(path);
+    res.send(content);
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.post('/api/drive/file', driveAuthMiddleware, async (req, res) => {
+  try {
+    const { path, content } = req.body;
+    const driveService = new DriveService(req.accessToken);
+    const result = await driveService.saveFile(path, content);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+app.post('/api/drive/folder', driveAuthMiddleware, async (req, res) => {
+  try {
+    const { path } = req.body;
+    const driveService = new DriveService(req.accessToken);
+    const result = await driveService.createFolder(path);
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 
 // Root route
 app.get('/', (req, res) => {
@@ -227,15 +359,27 @@ app.post('/api/ai/chat', (req, res) => {
   res.json({ response })
 })
 
-// Terminal command execution (simulated)
-app.post('/api/terminal/execute', (req, res) => {
-  const { command, cwd } = req.body
-  
-  // Simulate terminal command execution
-  const result = executeTerminalCommand(command, cwd)
-  
-  res.json(result)
-})
+const virtualTerminalService = require('./services/VirtualTerminalService');
+
+// Virtual Terminal command execution
+app.post('/api/terminal/execute', driveAuthMiddleware, async (req, res) => {
+  const { command } = req.body;
+  const sessionId = req.accessToken; // Using access token as session identifier
+
+  if (!command) {
+    return res.status(400).json({ error: 'Command is required.' });
+  }
+
+  try {
+    // Ensure a session exists for this user
+    virtualTerminalService.createSession(sessionId, req.accessToken);
+
+    const result = await virtualTerminalService.handleCommand(sessionId, command);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ output: `Terminal error: ${error.message}`, error: true });
+  }
+});
 
 // Code Execution API
 app.post('/api/execute', async (req, res) => {
