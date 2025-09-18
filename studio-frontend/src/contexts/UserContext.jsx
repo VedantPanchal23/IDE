@@ -21,6 +21,7 @@ export const useUser = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true)
 
   // Listen for authentication state changes
@@ -189,6 +190,7 @@ export const UserProvider = ({ children }) => {
         name: userData.name,
         photoURL: userData.photoURL || null
       });
+      setToken(accessToken);
       // Store the token for future API calls
       localStorage.setItem('google_access_token', accessToken);
       setLoading(false);
@@ -203,6 +205,7 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider value={{
       user,
+      token,
       loading,
       login,
       register,

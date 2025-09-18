@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { useUser } from '../contexts/UserContext'
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels'
 import TitleBar from '../components/UI/TitleBar'
 import ActivityBar from '../components/UI/ActivityBar'
@@ -26,6 +27,7 @@ import './Workbench.css'
  * Follows VS Code's workbench pattern with professional service-oriented design
  */
 const Workbench = () => {
+  const { user, token } = useUser();
   // Core IDE State
   const [activeView, setActiveView] = useState('explorer')
   const [openTabs, setOpenTabs] = useState([])
@@ -116,14 +118,17 @@ const Workbench = () => {
   
   // Initialize services
   useEffect(() => {
-    initializeWorkbench()
-    setupKeyboardShortcuts()
-    
+    if (user && token) {
+      initializeWorkbench()
+      setupKeyboardShortcuts()
+    }
     
     return () => {
-      cleanup()
+      if (user && token) {
+        cleanup()
+      }
     }
-  }, [])
+  }, [user, token])
 
   const initializeWorkbench = async () => {
     try {
