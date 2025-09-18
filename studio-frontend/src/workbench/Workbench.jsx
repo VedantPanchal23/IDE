@@ -16,8 +16,9 @@ import { LayoutService, Parts } from '../platform/layout/LayoutService'
 import { InstantiationService, ServiceIdentifiers, ServiceCollection } from '../platform/instantiation/InstantiationService'
 import { NotificationService } from '../platform/notification/NotificationService'
 import { EditorGroupModel } from '../platform/editor/EditorGroupModel'
-import FileService from '../platform/files/FileService'
-import JavaScriptExecutionService from '../platform/execution/JavaScriptExecutionService'
+import * as driveApi from '../services/DriveAPIService';
+import JavaScriptExecutionService from '../platform/execution/JavaScriptExecutionService';
+import path from 'path-browserify';
 import './Workbench.css'
 
 /**
@@ -111,7 +112,6 @@ const Workbench = () => {
   const layoutServiceRef = useRef(null)
   const notificationServiceRef = useRef(null)
   const editorGroupModelRef = useRef(null)
-  const fileServiceRef = useRef(null)
   const executionServiceRef = useRef(null)
   
   // Initialize services
@@ -119,50 +119,6 @@ const Workbench = () => {
     initializeWorkbench()
     setupKeyboardShortcuts()
     
-    // Auto-load demo file for testing breakpoints
-    setTimeout(() => {
-      const demoFile = {
-        id: 'debug-demo-js',
-        name: 'debug-demo.js', 
-        path: '/debug-demo.js',
-        type: 'file',
-        content: `// Debug Demo - Click in gutter to set breakpoints
-function calculateSum(numbers) {
-    let total = 0;
-    for (let i = 0; i < numbers.length; i++) {
-        total += numbers[i]; // Set breakpoint here
-    }
-    return total;
-}
-
-function processData() {
-    const data = [1, 2, 3, 4, 5];
-    const sum = calculateSum(data); // Set breakpoint here
-    const average = sum / data.length;
-    
-    console.log('Sum:', sum);
-    console.log('Average:', average);
-    
-    return { sum, average }; // Set breakpoint here
-}
-
-// Run this to test debugging
-function runDemo() {
-    const result = processData();
-    console.log('Demo result:', result);
-    return result;
-}`,
-        language: 'javascript'
-      }
-      
-      // Add to FileService so it can be read later
-      const fileService = fileServiceRef.current
-      if (fileService) {
-        fileService.saveFile(demoFile.path, demoFile.content)
-      }
-      
-      handleFileSelect(demoFile)
-    }, 2000)
     
     return () => {
       cleanup()
@@ -187,10 +143,6 @@ function runDemo() {
       const editorGroupModel = new EditorGroupModel()
       editorGroupModelRef.current = editorGroupModel
       
-      // Initialize File Service
-      await FileService.initialize()
-      fileServiceRef.current = FileService
-      
       // Initialize JavaScript Execution Service
       await JavaScriptExecutionService.initialize()
       executionServiceRef.current = JavaScriptExecutionService
@@ -199,7 +151,6 @@ function runDemo() {
       instantiationService.registerService(ServiceIdentifiers.LAYOUT_SERVICE, layoutService)
       instantiationService.registerService(ServiceIdentifiers.NOTIFICATION_SERVICE, notificationService)
       instantiationService.registerService(ServiceIdentifiers.EDITOR_SERVICE, editorGroupModel)
-      instantiationService.registerService(ServiceIdentifiers.FILE_SERVICE, FileService)
       instantiationService.registerService(ServiceIdentifiers.EXECUTION_SERVICE, JavaScriptExecutionService)
       
       // Initialize AI Service
@@ -219,11 +170,11 @@ function runDemo() {
       // Register enhanced commands
       registerEnhancedCommands()
       
-      // Load workspace from FileService
-      loadWorkspaceFromFileService()
+      // Load workspace from Google Drive
+      loadWorkspaceFromDrive();
       
       // Show success notification
-      notificationService.success('JavaScript IDE initialized successfully', { timeout: 2000 })
+      notificationService.success('Connected to Google Drive', { timeout: 2000 })
       
       console.log('[Workbench] Professional services initialized')
       
@@ -232,69 +183,50 @@ function runDemo() {
     }
   }
 
-  const loadWorkspaceFromFileService = async () => {
+  const loadWorkspaceFromDrive = async () => {
     try {
-      const fileService = fileServiceRef.current
-      if (!fileService) return
-      
-      // Get the file tree and all files from FileService
-      const fileTree = fileService.getFileTree()
-      const allFiles = fileService.getAllFiles()
-      
-      setFileTree(fileTree)
-      
-      // Open a default file if available
-      const jsFiles = allFiles.filter(file => 
-        file.path.endsWith('.js')
-      )
-      
-      if (jsFiles.length > 0) {
-        const defaultFile = {
-          id: jsFiles[0].path,
-          name: jsFiles[0].path.split('/').pop(),
-          content: jsFiles[0].content,
-          path: jsFiles[0].path,
-          language: jsFiles[0].language,
-          isDirty: false
-        }
-        setOpenTabs([defaultFile])
-        setActiveTabId(defaultFile.id)
-      }
-      
-      console.log('[Workbench] Workspace loaded from FileService')
+      const driveFiles = await driveApi.listFiles('/');
+      const formattedTree = driveFiles.map(file => ({
+        ...file,
+        path: `/${file.name}`, // Construct a path
+        children: file.type === 'folder' ? [] : undefined,
+      }));
+      setFileTree(formattedTree);
+      console.log('[Workbench] Workspace loaded from Google Drive');
     } catch (error) {
-      console.error('[Workbench] Failed to load workspace:', error)
+      console.error('[Workbench] Failed to load workspace from Drive:', error);
+      notificationServiceRef.current?.error('Failed to load workspace from Google Drive.');
     }
-  }
+  };
 
   const openFile = async (file) => {
     try {
-      const fileService = fileServiceRef.current
-      if (!fileService) return
-      
-      const fileContent = await fileService.readFile(file.path)
+      const fileContent = await driveApi.readFile(file.path);
       const tab = {
         id: file.path,
-        title: file.name,
+        name: file.name, // Ensure name is passed
         content: fileContent,
         language: getLanguageFromExtension(file.name),
         isDirty: false,
         path: file.path
-      }
+      };
       
       // Add tab if not already open
       setOpenTabs(prev => {
-        const exists = prev.find(t => t.id === tab.id)
-        if (exists) return prev
-        return [...prev, tab]
-      })
+        const exists = prev.find(t => t.id === tab.id);
+        if (exists) {
+          setActiveTabId(tab.id);
+          return prev;
+        }
+        return [...prev, tab];
+      });
       
-      setActiveTabId(tab.id)
+      setActiveTabId(tab.id);
     } catch (error) {
-      console.error('[Workbench] Failed to open file:', error)
-      notificationServiceRef.current?.error(`Failed to open file: ${file.name}`)
+      console.error('[Workbench] Failed to open file from Drive:', error);
+      notificationServiceRef.current?.error(`Failed to open file: ${file.name}`);
     }
-  }
+  };
 
   const getLanguageFromExtension = (filename) => {
     const ext = filename.split('.').pop()?.toLowerCase()
@@ -984,11 +916,52 @@ function runDemo() {
     }
   }, [])
 
+  const [expandedFolders, setExpandedFolders] = useState(new Set());
+
   // Folder toggle handler for sidebar
-  const handleToggleFolder = useCallback((folderPath) => {
-    // This would typically handle folder expand/collapse in a real file tree
-    console.log('Toggle folder:', folderPath)
-  }, [])
+  const handleToggleFolder = useCallback(async (folderPath) => {
+    const newExpandedFolders = new Set(expandedFolders);
+    if (newExpandedFolders.has(folderPath)) {
+      newExpandedFolders.delete(folderPath);
+      setExpandedFolders(newExpandedFolders);
+      return;
+    }
+
+    newExpandedFolders.add(folderPath);
+    setExpandedFolders(newExpandedFolders);
+
+    // Find the folder in the tree to populate its children
+    const findAndPopulateFolder = (nodes, path) => {
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i];
+        if (node.path === path) {
+          // Fetch children if they haven't been fetched yet
+          if (!node.children || node.children.length === 0) {
+            driveApi.listFiles(path).then(children => {
+              const formattedChildren = children.map(child => ({
+                ...child,
+                path: `${path}/${child.name}`,
+                children: child.type === 'folder' ? [] : undefined,
+              }));
+              node.children = formattedChildren;
+              setFileTree(prevTree => [...prevTree]); // Trigger re-render
+            });
+          }
+          return true;
+        }
+        if (node.children && findAndPopulateFolder(node.children, path)) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    setFileTree(prevTree => {
+      const newTree = [...prevTree];
+      findAndPopulateFolder(newTree, folderPath);
+      return newTree;
+    });
+  }, [expandedFolders]);
 
   // Utility Functions
   const detectLanguage = (filename) => {
@@ -1282,96 +1255,42 @@ function runDemo() {
 
   // File operation handler for advanced file management
   const handleFileOperation = useCallback(async (operation, params) => {
-    const fileService = fileServiceRef.current
-    if (!fileService) return
-
     try {
+      const currentFile = openTabs.find(tab => tab.id === activeTabId);
+      const parentPath = currentFile ? path.dirname(currentFile.path) : '/';
+
       switch (operation) {
-        case 'createFile':
-          const newFilePath = params.parentPath ? `${params.parentPath}/${params.name}` : `/${params.name}`
-          fileService.createFile(newFilePath, '')
-          // Update file tree
-          setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-          break
-
-        case 'createFolder':
-          // For demo purposes, create a marker file in the folder
-          const folderMarkerPath = params.parentPath ? `${params.parentPath}/${params.name}/.folder` : `/${params.name}/.folder`
-          fileService.createFile(folderMarkerPath, '')
-          setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-          break
-
-        case 'delete':
-          if (fileService.files.has(params.path)) {
-            fileService.files.delete(params.path)
-            setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-            // Close tab if open
-            setOpenTabs(prev => prev.filter(tab => tab.path !== params.path))
-            if (activeTabId && openTabs.find(tab => tab.id === activeTabId)?.path === params.path) {
-              setActiveTabId(null)
-            }
+        case 'newFile': {
+          const fileName = prompt('Enter new file name:');
+          if (fileName) {
+            const newFilePath = `${parentPath === '/' ? '' : parentPath}/${fileName}`;
+            await driveApi.saveFile(newFilePath, '');
+            loadWorkspaceFromDrive(); // Refresh tree
           }
-          break
-
-        case 'rename':
-          const oldContent = fileService.files.get(params.oldPath)
-          if (oldContent !== undefined) {
-            const newPath = params.oldPath.replace(/[^/]*$/, params.newName)
-            fileService.files.delete(params.oldPath)
-            fileService.files.set(newPath, oldContent)
-            setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-            // Update open tabs
-            setOpenTabs(prev => prev.map(tab => 
-              tab.path === params.oldPath 
-                ? { ...tab, path: newPath, name: params.newName }
-                : tab
-            ))
+          break;
+        }
+        case 'newFolder': {
+          const folderName = prompt('Enter new folder name:');
+          if (folderName) {
+            const newFolderPath = `${parentPath === '/' ? '' : parentPath}/${folderName}`;
+            await driveApi.createFolder(newFolderPath);
+            loadWorkspaceFromDrive(); // Refresh tree
           }
-          break
-
-        case 'copy':
-          // Store in clipboard (simplified)
-          window.fileClipboard = { operation: 'copy', path: params.path }
-          break
-
-        case 'cut':
-          window.fileClipboard = { operation: 'cut', path: params.path }
-          break
-
-        case 'paste':
-          if (window.fileClipboard) {
-            const { operation, path: sourcePath } = window.fileClipboard
-            const content = fileService.files.get(sourcePath)
-            if (content !== undefined) {
-              const fileName = sourcePath.split('/').pop()
-              const targetPath = params.parentPath ? `${params.parentPath}/${fileName}` : `/${fileName}`
-              
-              fileService.files.set(targetPath, content)
-              
-              if (operation === 'cut') {
-                fileService.files.delete(sourcePath)
-                // Close tab if open
-                setOpenTabs(prev => prev.filter(tab => tab.path !== sourcePath))
-              }
-              
-              setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-              window.fileClipboard = null
-            }
-          }
-          break
-
-        case 'refresh':
-          setFileTree(prev => fileService.buildFileTree(Array.from(fileService.files.keys())))
-          break
-
+          break;
+        }
+        case 'refresh': {
+          loadWorkspaceFromDrive();
+          notificationServiceRef.current?.info('File explorer refreshed');
+          break;
+        }
         default:
-          console.log('Unknown file operation:', operation, params)
+          console.log('Unknown file operation:', operation, params);
       }
     } catch (error) {
-      console.error('File operation failed:', error)
-      // Could show notification here
+      console.error('File operation failed:', error);
+      notificationServiceRef.current?.error(`File operation failed: ${error.message}`);
     }
-  }, [activeTabId, openTabs])
+  }, [activeTabId, openTabs]);
 
   const cleanup = () => {
     // Cleanup services and listeners
@@ -1466,7 +1385,7 @@ function runDemo() {
                   onFileSelect={handleFileSelect}
                   onToggleFolder={handleToggleFolder}
                   onFileOperation={handleFileOperation}
-                  expandedFolders={new Set(['src'])}
+                  expandedFolders={expandedFolders}
                   isVisible={sidebarVisible}
                   debugVariables={debugVariables}
                   debugCallStack={debugCallStack}
