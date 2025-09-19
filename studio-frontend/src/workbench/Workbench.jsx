@@ -1285,6 +1285,15 @@ Feel free to modify this content and explore the IDE features!`;
           targetDir = params.path.substring(0, params.path.lastIndexOf('/')) || '/';
           console.log('[Workbench] Using parent of clicked file as target:', targetDir);
         }
+      } else if (params?.path) {
+        // Handle case where params is just the file/folder item directly
+        if (params.type === 'folder') {
+          targetDir = params.path;
+          console.log('[Workbench] Using direct folder context as target:', targetDir);
+        } else {
+          targetDir = params.path.substring(0, params.path.lastIndexOf('/')) || '/';
+          console.log('[Workbench] Using parent of direct file context as target:', targetDir);
+        }
       } else {
         // No context menu context - use smart detection based on expanded folders
         const expandedArray = Array.from(expandedFolders);

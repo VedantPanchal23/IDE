@@ -10,7 +10,9 @@ import {
   Trash2,
   Copy,
   Scissors,
-  RefreshCw
+  RefreshCw,
+  FilePlus,
+  FolderPlus
 } from 'lucide-react'
 import './FileExplorer.css'
 
@@ -144,14 +146,14 @@ const FileExplorer = ({
             onClick={() => onFileOperation?.('newFile', { path: '/', type: 'folder' })}
             title="New File"
           >
-            <File size={16} />
+            <FilePlus size={16} />
           </button>
           <button 
             className="action-btn" 
             onClick={() => onFileOperation?.('newFolder', { path: '/', type: 'folder' })}
             title="New Folder"
           >
-            <Folder size={16} />
+            <FolderPlus size={16} />
           </button>
           <button 
             className="action-btn" 
@@ -198,11 +200,11 @@ const FileExplorer = ({
           }}
         >
           <div className="context-menu-item" onClick={() => handleContextAction('newFile')}>
-            <File size={14} />
+            <FilePlus size={14} />
             <span>New File</span>
           </div>
           <div className="context-menu-item" onClick={() => handleContextAction('newFolder')}>
-            <Folder size={14} />
+            <FolderPlus size={14} />
             <span>New Folder</span>
           </div>
           <div className="context-menu-separator" />
