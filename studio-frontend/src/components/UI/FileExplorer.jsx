@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { 
   File, 
   Folder, 
@@ -28,6 +28,18 @@ const FileExplorer = ({
   const [renaming, setRenaming] = useState(null)
   const fileInputRef = useRef(null)
 
+  // Close context menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      setContextMenu({ visible: false, x: 0, y: 0, item: null })
+    }
+    
+    if (contextMenu.visible) {
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
+    }
+  }, [contextMenu.visible])
+
   // Get proper VS Code file icon
   const getFileIcon = (fileName, isFolder, isOpen = false) => {
     if (isFolder) {
@@ -51,6 +63,35 @@ const FileExplorer = ({
   const closeContextMenu = useCallback(() => {
     setContextMenu({ visible: false, x: 0, y: 0, item: null })
   }, [])
+
+  // Context menu actions
+  const handleContextAction = useCallback((action) => {
+    const { item } = contextMenu
+    
+    switch (action) {
+      case 'newFile':
+        onFileOperation?.('newFile', item)
+        break
+      case 'newFolder':
+        onFileOperation?.('newFolder', item)
+        break
+      case 'refresh':
+        onFileOperation?.('refresh', item)
+        break
+      case 'rename':
+        setRenaming(item?.path)
+        break
+      case 'delete':
+        if (item && confirm(`Delete ${item.name}?`)) {
+          onFileOperation?.('delete', item)
+        }
+        break
+      default:
+        console.log('Unknown context action:', action)
+    }
+    
+    closeContextMenu()
+  }, [contextMenu, onFileOperation])
 
   // Render file tree item
   const renderFileItem = (item, depth = 0) => {
@@ -100,21 +141,21 @@ const FileExplorer = ({
         <div className="header-actions">
           <button 
             className="action-btn" 
-            onClick={() => onFileOperation?.('newFile')}
+            onClick={() => onFileOperation?.('newFile', { path: '/', type: 'folder' })}
             title="New File"
           >
             <File size={16} />
           </button>
           <button 
             className="action-btn" 
-            onClick={() => onFileOperation?.('newFolder')}
+            onClick={() => onFileOperation?.('newFolder', { path: '/', type: 'folder' })}
             title="New Folder"
           >
             <Folder size={16} />
           </button>
           <button 
             className="action-btn" 
-            onClick={() => onFileOperation?.('refresh')}
+            onClick={() => onFileOperation?.('refresh', { path: '/', type: 'folder' })}
             title="Refresh"
           >
             <RefreshCw size={16} />
@@ -144,6 +185,46 @@ const FileExplorer = ({
           <div className="no-files">No files found</div>
         )}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu.visible && (
+        <div
+          className="context-menu"
+          style={{
+            position: 'fixed',
+            top: contextMenu.y,
+            left: contextMenu.x,
+            zIndex: 1000,
+          }}
+        >
+          <div className="context-menu-item" onClick={() => handleContextAction('newFile')}>
+            <File size={14} />
+            <span>New File</span>
+          </div>
+          <div className="context-menu-item" onClick={() => handleContextAction('newFolder')}>
+            <Folder size={14} />
+            <span>New Folder</span>
+          </div>
+          <div className="context-menu-separator" />
+          <div className="context-menu-item" onClick={() => handleContextAction('refresh')}>
+            <RefreshCw size={14} />
+            <span>Refresh</span>
+          </div>
+          {contextMenu.item && (
+            <>
+              <div className="context-menu-separator" />
+              <div className="context-menu-item" onClick={() => handleContextAction('rename')}>
+                <Edit3 size={14} />
+                <span>Rename</span>
+              </div>
+              <div className="context-menu-item" onClick={() => handleContextAction('delete')}>
+                <Trash2 size={14} />
+                <span>Delete</span>
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }

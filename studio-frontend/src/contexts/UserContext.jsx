@@ -26,6 +26,23 @@ export const UserProvider = ({ children }) => {
 
   // Listen for authentication state changes
   useEffect(() => {
+    // Check for demo mode
+    const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true' || window.location.search.includes('demo=true')
+    
+    if (isDemoMode) {
+      console.log('Demo mode enabled - setting demo user')
+      setUser({
+        id: 'demo-user',
+        email: 'demo@example.com',
+        name: 'Demo User',
+        photoURL: null
+      })
+      setToken('demo-token')
+      localStorage.setItem('google_access_token', 'demo-token')
+      setLoading(false)
+      return
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         // User is signed in
