@@ -34,6 +34,7 @@ const Workbench = () => {
   const [activeTabId, setActiveTabId] = useState(null)
   const [fileTree, setFileTree] = useState([])
   const [fileTreeKey, setFileTreeKey] = useState(0) // Add this to force re-renders
+  const [expandedFolders, setExpandedFolders] = useState(new Set());
   
   // Layout State
   const [zenMode, setZenMode] = useState(false)
@@ -1107,6 +1108,7 @@ Feel free to modify this content and explore the IDE features!`;
 
     // File commands
     CommandService.on('file.new', handleNewFile)
+    CommandService.on('file.newFolder', handleNewFolder)
     CommandService.on('file.open', handleOpenFile)
     CommandService.on('file.save', handleSaveFile)
     CommandService.on('file.saveAll', handleSaveAll)
@@ -1234,20 +1236,273 @@ Feel free to modify this content and explore the IDE features!`;
     return () => document.removeEventListener('keydown', handleKeyDown)
   }
 
+  // Utility function for refreshing folder contents
+  const refreshNodeInTree = useCallback(async (folderPath) => {
+    try {
+      console.log('[Workbench] Refreshing folder:', folderPath);
+      
+      // If refreshing root, reload the entire tree
+      if (folderPath === '/') {
+        console.log('[Workbench] Refreshing entire workspace');
+        await loadWorkspaceFromDrive();
+        return;
+      }
+
+      // For now, let's use the simpler approach of refreshing from root
+      // This ensures we get the most up-to-date file tree
+      console.log('[Workbench] Performing full workspace refresh for reliability');
+      await loadWorkspaceFromDrive();
+      
+      // Auto-expand the folder that was being refreshed
+      if (folderPath !== '/') {
+        setExpandedFolders(prev => new Set(prev).add(folderPath));
+      }
+      
+      // Force re-render of file explorer
+      setFileTreeKey(prev => prev + 1);
+      
+    } catch (error) {
+      console.error('Error in refreshNodeInTree:', error);
+      notificationServiceRef.current?.error(`Failed to refresh folder: ${error.message}`);
+    }
+  }, [loadWorkspaceFromDrive, setExpandedFolders, setFileTreeKey, notificationServiceRef]);
+
+  // File Operations - Smart file/folder creation with context-aware targeting
+  const handleFileOperation = useCallback(async (operation, params) => {
+    try {
+      console.log('[Workbench] File operation:', operation, 'with params:', params);
+      
+      // Smart directory detection logic
+      let targetDir = '/'; // default to root
+      
+      if (params?.path && params?.type) {
+        // If we have context from right-clicking on an item
+        if (params.type === 'folder') {
+          targetDir = params.path; // Use the clicked folder directly
+          console.log('[Workbench] Using clicked folder as target:', targetDir);
+        } else {
+          // If clicked on a file, use its parent directory
+          targetDir = params.path.substring(0, params.path.lastIndexOf('/')) || '/';
+          console.log('[Workbench] Using parent of clicked file as target:', targetDir);
+        }
+      } else {
+        // No context menu context - use smart detection based on expanded folders
+        const expandedArray = Array.from(expandedFolders);
+        console.log('[Workbench] No context menu. Expanded folders:', expandedArray);
+        
+        if (expandedArray.length > 0) {
+          // Use the most recently expanded folder (last in the array when converted from Set)
+          targetDir = expandedArray[expandedArray.length - 1];
+          console.log('[Workbench] Using most recently expanded folder:', targetDir);
+        } else {
+          // Fallback to root if no folders are expanded
+          console.log('[Workbench] No folders expanded, using root directory');
+          targetDir = '/';
+        }
+      }
+      
+      console.log('[Workbench] Final target directory:', targetDir);
+
+      switch (operation) {
+        case 'newFile': {
+          const fileName = prompt('Enter new file name:');
+          if (fileName && fileName.trim()) {
+            const newFilePath = `${targetDir === '/' ? '' : targetDir}/${fileName.trim()}`;
+            console.log('[Workbench] Creating new file at:', newFilePath);
+            
+            try {
+              await driveApi.saveFile(newFilePath, '');
+              console.log('[Workbench] File created successfully, waiting for sync...');
+            } catch (error) {
+              console.warn('[Workbench] Backend not available, simulating file creation:', error.message);
+              // In demo mode, we simulate the file creation
+            }
+            
+            // Small delay to simulate processing
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Automatically expand the target folder if it's not already
+            if (targetDir !== '/' && !expandedFolders.has(targetDir)) {
+              console.log('[Workbench] Expanding target folder:', targetDir);
+              setExpandedFolders(prev => {
+                const newSet = new Set(prev);
+                newSet.add(targetDir);
+                console.log('[Workbench] Expanded folders after adding:', Array.from(newSet));
+                return newSet;
+              });
+            }
+            
+            // Add the new file to the tree manually in demo mode
+            const newFile = {
+              name: fileName.trim(),
+              type: 'file',
+              path: newFilePath,
+              size: 0,
+              lastModified: new Date().toISOString(),
+            };
+            
+            setFileTree(prevTree => {
+              console.log('[Workbench] Current file tree before update:', prevTree);
+              console.log('[Workbench] Adding new file to targetDir:', targetDir);
+              
+              const newTree = [...prevTree];
+              
+              // Add to root if targetDir is '/', otherwise find the parent folder
+              if (targetDir === '/') {
+                console.log('[Workbench] Adding file to root directory');
+                newTree.push(newFile);
+              } else {
+                console.log('[Workbench] Looking for parent folder:', targetDir);
+                const findAndAddToFolder = (nodes, path) => {
+                  console.log('[Workbench] Searching in nodes for path:', path, 'nodes count:', nodes.length);
+                  for (const node of nodes) {
+                    console.log('[Workbench] Checking node:', node.path, node.type);
+                    if (node.path === path && node.type === 'folder') {
+                      console.log('[Workbench] Found matching folder! Adding file to:', node.path);
+                      if (!node.children) node.children = [];
+                      node.children.push(newFile);
+                      console.log('[Workbench] Folder children after adding:', node.children.length);
+                      return true;
+                    }
+                    if (node.children && findAndAddToFolder(node.children, path)) {
+                      return true;
+                    }
+                  }
+                  console.log('[Workbench] No matching folder found for path:', path);
+                  return false;
+                };
+                const result = findAndAddToFolder(newTree, targetDir);
+                console.log('[Workbench] Find and add result:', result);
+              }
+              
+              console.log('[Workbench] File tree after update:', newTree);
+              return newTree;
+            });
+            
+            setFileTreeKey(prev => prev + 1);
+            console.log('[Workbench] File added to tree');
+            
+            // Automatically open the newly created file
+            setTimeout(() => {
+              openFile(newFile);
+            }, 300);
+            
+            notificationServiceRef.current?.success(`File '${fileName}' created successfully`);
+          }
+          break;
+        }
+        case 'newFolder': {
+          const folderName = prompt('Enter new folder name:');
+          if (folderName && folderName.trim()) {
+            const newFolderPath = `${targetDir === '/' ? '' : targetDir}/${folderName.trim()}`;
+            console.log('[Workbench] Creating new folder at:', newFolderPath);
+            
+            try {
+              await driveApi.createFolder(newFolderPath);
+              console.log('[Workbench] Folder created successfully, waiting for sync...');
+            } catch (error) {
+              console.warn('[Workbench] Backend not available, simulating folder creation:', error.message);
+              // In demo mode, we simulate the folder creation
+            }
+            
+            // Small delay to simulate processing
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Automatically expand the target folder if it's not already
+            if (targetDir !== '/' && !expandedFolders.has(targetDir)) {
+              console.log('[Workbench] Expanding target folder for new folder:', targetDir);
+              setExpandedFolders(prev => {
+                const newSet = new Set(prev);
+                newSet.add(targetDir);
+                console.log('[Workbench] Expanded folders after adding for folder:', Array.from(newSet));
+                return newSet;
+              });
+            }
+            
+            // Add the new folder to the tree manually in demo mode
+            const newFolder = {
+              name: folderName.trim(),
+              type: 'folder',
+              path: newFolderPath,
+              children: [],
+            };
+            
+            setFileTree(prevTree => {
+              console.log('[Workbench] Current file tree before folder update:', prevTree);
+              console.log('[Workbench] Adding new folder to targetDir:', targetDir);
+              
+              const newTree = [...prevTree];
+              
+              // Add to root if targetDir is '/', otherwise find the parent folder
+              if (targetDir === '/') {
+                console.log('[Workbench] Adding folder to root directory');
+                newTree.push(newFolder);
+              } else {
+                console.log('[Workbench] Looking for parent folder:', targetDir);
+                const findAndAddToFolder = (nodes, path) => {
+                  console.log('[Workbench] Searching folder nodes for path:', path, 'nodes count:', nodes.length);
+                  for (const node of nodes) {
+                    console.log('[Workbench] Checking folder node:', node.path, node.type);
+                    if (node.path === path && node.type === 'folder') {
+                      console.log('[Workbench] Found matching parent folder! Adding folder to:', node.path);
+                      if (!node.children) node.children = [];
+                      node.children.push(newFolder);
+                      console.log('[Workbench] Parent folder children after adding:', node.children.length);
+                      return true;
+                    }
+                    if (node.children && findAndAddToFolder(node.children, path)) {
+                      return true;
+                    }
+                  }
+                  console.log('[Workbench] No matching parent folder found for path:', path);
+                  return false;
+                };
+                const result = findAndAddToFolder(newTree, targetDir);
+                console.log('[Workbench] Find and add folder result:', result);
+              }
+              
+              console.log('[Workbench] File tree after folder update:', newTree);
+              return newTree;
+            });
+            
+            setFileTreeKey(prev => prev + 1);
+            console.log('[Workbench] Folder added to tree');
+            
+            notificationServiceRef.current?.success(`Folder '${folderName}' created successfully`);
+          }
+          break;
+        }
+        case 'refresh': {
+          const refreshPath = params?.path || '/';
+          console.log('[Workbench] Manual refresh requested for:', refreshPath);
+          
+          if (refreshPath === '/') {
+            await forceRefreshWorkspace();
+          } else {
+            await refreshNodeInTree(refreshPath);
+          }
+          notificationServiceRef.current?.info(`Refreshed '${refreshPath === '/' ? 'workspace' : refreshPath}'`);
+          break;
+        }
+        default:
+          console.log('Unknown file operation:', operation, params);
+      }
+    } catch (error) {
+      console.error('File operation failed:', error);
+      notificationServiceRef.current?.error(`File operation failed: ${error.message}`);
+    }
+  }, [expandedFolders, setExpandedFolders, setFileTree, setFileTreeKey, openFile, notificationServiceRef, driveApi, forceRefreshWorkspace, refreshNodeInTree]);
+
   // File Operations
   const handleNewFile = useCallback(() => {
-    const newFile = {
-      id: `file-${Date.now()}`,
-      name: 'Untitled-1.txt',
-      content: '',
-      language: 'plaintext',
-      isDirty: false,
-      path: null
-    }
-    
-    setOpenTabs(prev => [...prev, newFile])
-    setActiveTabId(newFile.id)
-  }, [])
+    // Use the smart file operation system instead of creating temporary files
+    handleFileOperation('newFile');
+  }, [handleFileOperation])
+
+  const handleNewFolder = useCallback(() => {
+    // Use the smart file operation system for folder creation
+    handleFileOperation('newFolder');
+  }, [handleFileOperation])
 
   const handleOpenFile = useCallback(() => {
     // Trigger file picker or quick open
@@ -1462,8 +1717,6 @@ Feel free to modify this content and explore the IDE features!`;
       }
     }
   }, [])
-
-  const [expandedFolders, setExpandedFolders] = useState(new Set());
 
   // Debug file tree changes
   useEffect(() => {
@@ -1863,203 +2116,7 @@ Feel free to modify this content and explore the IDE features!`;
     }
   }, [debugWatchExpressions, debugBreakpoints, isDebugging, isPaused])
 
-  const refreshNodeInTree = useCallback(async (folderPath) => {
-    try {
-      console.log('[Workbench] Refreshing folder:', folderPath);
-      
-      // If refreshing root, reload the entire tree
-      if (folderPath === '/') {
-        console.log('[Workbench] Refreshing entire workspace');
-        await loadWorkspaceFromDrive();
-        return;
-      }
-
-      // For now, let's use the simpler approach of refreshing from root
-      // This ensures we get the most up-to-date file tree
-      console.log('[Workbench] Performing full workspace refresh for reliability');
-      await loadWorkspaceFromDrive();
-      
-      // Auto-expand the folder that was being refreshed
-      if (folderPath !== '/') {
-        setExpandedFolders(prev => new Set(prev).add(folderPath));
-      }
-      
-      // Force re-render of file explorer
-      setFileTreeKey(prev => prev + 1);
-      
-    } catch (error) {
-      console.error('Error in refreshNodeInTree:', error);
-      notificationServiceRef.current?.error(`Failed to refresh folder: ${error.message}`);
-    }
-  }, []);
-
   // File operation handler for advanced file management
-  const handleFileOperation = useCallback(async (operation, params) => {
-    try {
-      console.log('[Workbench] File operation:', operation, params);
-      
-      // Use the path from params if available (e.g., from context menu), otherwise default
-      const activeFile = openTabs.find(tab => tab.id === activeTabId);
-      const baseDir = params?.path ? (params.type === 'folder' ? params.path : path.dirname(params.path)) : (activeFile ? path.dirname(activeFile.path) : '/');
-      
-      console.log('[Workbench] Base directory:', baseDir);
-
-      switch (operation) {
-        case 'newFile': {
-          const fileName = prompt('Enter new file name:');
-          if (fileName && fileName.trim()) {
-            const newFilePath = `${baseDir === '/' ? '' : baseDir}/${fileName.trim()}`;
-            console.log('[Workbench] Creating new file at:', newFilePath);
-            
-            try {
-              await driveApi.saveFile(newFilePath, '');
-              console.log('[Workbench] File created successfully, waiting for sync...');
-            } catch (error) {
-              console.warn('[Workbench] Backend not available, simulating file creation:', error.message);
-              // In demo mode, we simulate the file creation
-            }
-            
-            // Small delay to simulate processing
-            await new Promise(resolve => setTimeout(resolve, 200));
-            
-            // Automatically expand the parent folder if it's not already
-            if (!expandedFolders.has(baseDir)) {
-              console.log('[Workbench] Expanding parent folder:', baseDir);
-              setExpandedFolders(prev => new Set(prev).add(baseDir));
-            }
-            
-            // Add the new file to the tree manually in demo mode
-            const newFile = {
-              name: fileName.trim(),
-              type: 'file',
-              path: newFilePath,
-              size: 0,
-              lastModified: new Date().toISOString(),
-            };
-            
-            setFileTree(prevTree => {
-              const newTree = [...prevTree];
-              
-              // Add to root if baseDir is '/', otherwise find the parent folder
-              if (baseDir === '/') {
-                newTree.push(newFile);
-              } else {
-                const findAndAddToFolder = (nodes, path) => {
-                  for (const node of nodes) {
-                    if (node.path === path && node.type === 'folder') {
-                      if (!node.children) node.children = [];
-                      node.children.push(newFile);
-                      return true;
-                    }
-                    if (node.children && findAndAddToFolder(node.children, path)) {
-                      return true;
-                    }
-                  }
-                  return false;
-                };
-                findAndAddToFolder(newTree, baseDir);
-              }
-              
-              return newTree;
-            });
-            
-            setFileTreeKey(prev => prev + 1);
-            console.log('[Workbench] File added to tree');
-            
-            // Automatically open the newly created file
-            setTimeout(() => {
-              openFile(newFile);
-            }, 300);
-            
-            notificationServiceRef.current?.success(`File '${fileName}' created successfully`);
-          }
-          break;
-        }
-        case 'newFolder': {
-          const folderName = prompt('Enter new folder name:');
-          if (folderName && folderName.trim()) {
-            const newFolderPath = `${baseDir === '/' ? '' : baseDir}/${folderName.trim()}`;
-            console.log('[Workbench] Creating new folder at:', newFolderPath);
-            
-            try {
-              await driveApi.createFolder(newFolderPath);
-              console.log('[Workbench] Folder created successfully, waiting for sync...');
-            } catch (error) {
-              console.warn('[Workbench] Backend not available, simulating folder creation:', error.message);
-              // In demo mode, we simulate the folder creation
-            }
-            
-            // Small delay to simulate processing
-            await new Promise(resolve => setTimeout(resolve, 200));
-            
-            // Automatically expand the parent folder if it's not already
-            if (!expandedFolders.has(baseDir)) {
-              console.log('[Workbench] Expanding parent folder:', baseDir);
-              setExpandedFolders(prev => new Set(prev).add(baseDir));
-            }
-            
-            // Add the new folder to the tree manually in demo mode
-            const newFolder = {
-              name: folderName.trim(),
-              type: 'folder',
-              path: newFolderPath,
-              children: [],
-            };
-            
-            setFileTree(prevTree => {
-              const newTree = [...prevTree];
-              
-              // Add to root if baseDir is '/', otherwise find the parent folder
-              if (baseDir === '/') {
-                newTree.push(newFolder);
-              } else {
-                const findAndAddToFolder = (nodes, path) => {
-                  for (const node of nodes) {
-                    if (node.path === path && node.type === 'folder') {
-                      if (!node.children) node.children = [];
-                      node.children.push(newFolder);
-                      return true;
-                    }
-                    if (node.children && findAndAddToFolder(node.children, path)) {
-                      return true;
-                    }
-                  }
-                  return false;
-                };
-                findAndAddToFolder(newTree, baseDir);
-              }
-              
-              return newTree;
-            });
-            
-            setFileTreeKey(prev => prev + 1);
-            console.log('[Workbench] Folder added to tree');
-            
-            notificationServiceRef.current?.success(`Folder '${folderName}' created successfully`);
-          }
-          break;
-        }
-        case 'refresh': {
-          const refreshPath = params?.path || baseDir || '/';
-          console.log('[Workbench] Manual refresh requested for:', refreshPath);
-          
-          if (refreshPath === '/') {
-            await forceRefreshWorkspace();
-          } else {
-            await refreshNodeInTree(refreshPath);
-          }
-          notificationServiceRef.current?.info(`Refreshed '${refreshPath === '/' ? 'workspace' : refreshPath}'`);
-          break;
-        }
-        default:
-          console.log('Unknown file operation:', operation, params);
-      }
-    } catch (error) {
-      console.error('File operation failed:', error);
-      notificationServiceRef.current?.error(`File operation failed: ${error.message}`);
-    }
-  }, [activeTabId, openTabs, expandedFolders, refreshNodeInTree, forceRefreshWorkspace]);
-
   const cleanup = () => {
     // Cleanup services and listeners
     CommandService.removeAllListeners()
